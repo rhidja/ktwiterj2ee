@@ -7,13 +7,15 @@
     
  	<servlet>
 		<servlet-name>jersey-serlvet</servlet-name>
-		<servlet-class>
-                     com.sun.jersey.spi.container.servlet.ServletContainer
-                </servlet-class>
+                <servlet-class> com.sun.jersey.spi.container.servlet.ServletContainer </servlet-class>
 		<init-param>
-		     <param-name>com.sun.jersey.config.property.packages</param-name>
-		     <param-value>ktwtr.rest</param-value>
+                        <param-name>com.sun.jersey.config.property.packages</param-name>
+                        <param-value>ktwtr.rest</param-value>
 		</init-param>
+                <init-param>
+                        <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
+                        <param-value>true</param-value>
+                </init-param>                
 		<load-on-startup>1</load-on-startup>
 	</servlet>
  
@@ -22,5 +24,13 @@
 		<url-pattern>/rest/*</url-pattern>
 	</servlet-mapping>   
     
-
+ 	<servlet>
+		<servlet-name>signin-form</servlet-name>
+                <servlet-class> ktwtr.SigninForm</servlet-class>
+	</servlet>
+ 
+	<servlet-mapping>
+		<servlet-name>signin-form</servlet-name>
+		<url-pattern>/form</url-pattern>
+	</servlet-mapping> 
 </web-app>

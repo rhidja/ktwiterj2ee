@@ -12,92 +12,133 @@ import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
 
 @Entity
-@Table(name="Member")
+@Table(name = "tb_member")
 public class Member{
-	@Id
-	@GeneratedValue
-	private long id;
-	private String login;
-	private String email;
-	private String motPasse;
-	@OneToOne(mappedBy="member",cascade = {CascadeType.ALL})
-	private Profile profile;
-	@OneToMany(mappedBy="autor",cascade = {CascadeType.ALL})
-	private List<Post> posts;
-	@OneToMany(mappedBy="autor",cascade = {CascadeType.ALL})
+
+    @Id
+    @GeneratedValue
+    private long id;
+    private String login;
+    private String email;
+    private String password;
+    
+    @OneToOne(mappedBy = "member", cascade = {CascadeType.ALL})
+    private Profile profile;
+    @OneToMany(mappedBy = "autor", cascade = {CascadeType.ALL})
+    private List<Post> posts;
+    @OneToMany(mappedBy = "autor", cascade = {CascadeType.ALL})
     private List<Comment> comments;
-	
-	// Getters and Setters ================================================================================
+    
+    @OneToMany(mappedBy = "expediteur", cascade = {CascadeType.ALL})
+    private List<Message> messages_envoyes;
+    @OneToMany(mappedBy = "recepteur", cascade = {CascadeType.ALL})
+    private List<Message> messages_recus;
+    
+    @OneToOne(mappedBy = "member", cascade = {CascadeType.ALL})
+    private List<Likes> likedPosts;
+    @OneToOne(mappedBy = "member", cascade = {CascadeType.ALL})
+    private List<Likes> likedComments;
+    
+    // Getters and Setters ================================================================================
+    public long getId() {
+        return id;
+    }
 
-	public long getId() {
-		return id;
-	}
-	
-	public void setId(long id) {
-		this.id = id;
-	}
-	
-	public String getLogin() {
-		return login;
-	}
+    public void setId(long id) {
+        this.id = id;
+    }
 
-	public void setLogin(String login) {
-		this.login = login;
-	}
+    public String getLogin() {
+        return login;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public void setLogin(String login) {
+        this.login = login;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public String getMotPasse() {
-		return motPasse;
-	}
-	
-	public void setMotPasse(String motPasse) {
-		this.motPasse = motPasse;
-	}
-	
-	
-	public Profile getProfile() {
-		return profile;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public void setProfile(Profile profile) {
-		this.profile = profile;
-	}
-	
-	
-	public List<Post> getPosts() {
-		return posts;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public void setPosts(List<Post> posts) {
-		this.posts = posts;
-	}
-	
-	public List<Comment> getComments() {
-		return comments;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public void setComments(List<Comment> comments) {
-		this.comments = comments;
-	}
+    public Profile getProfile() {
+        return profile;
+    }
 
-	// Methodes statics ====================================================================================
-	
-	public static List<Member> all(){
-		return Ebean.find(Member.class).findList();  
-	}
-	
-	public static Member getMember(String login){
-		return Ebean.find(Member.class).where().eq("login",login).findUnique();
-	}
-	
-	public static Boolean isMember (String login, String motPasse){
-		return Ebean.find(Member.class).where().eq("login",login).eq("motPasse",motPasse).findRowCount()>0;
-	}	
+    public void setProfile(Profile profile) {
+        this.profile = profile;
+    }
+
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public List<Message> getMessages_envoyes() {
+        return messages_envoyes;
+    }
+
+    public void setMessages_envoyes(List<Message> messages_envoyes) {
+        this.messages_envoyes = messages_envoyes;
+    }
+
+    public List<Message> getMessages_recus() {
+        return messages_recus;
+    }
+
+    public void setMessages_recus(List<Message> messages_recus) {
+        this.messages_recus = messages_recus;
+    }
+
+    public List<Likes> getLikedPosts() {
+        return likedPosts;
+    }
+
+    public void setLikedPosts(List<Likes> likedPosts) {
+        this.likedPosts = likedPosts;
+    }
+
+    public List<Likes> getLikedComments() {
+        return likedComments;
+    }
+
+    public void setLikedComments(List<Likes> likedComments) {
+        this.likedComments = likedComments;
+    }
+    
+    // Methodes statics ====================================================================================
+    
+    public static List<Member> members() {
+        return Ebean.find(Member.class).findList();
+    }
+
+    public static Member getMember(String login) {
+        return Ebean.find(Member.class).where().eq("login", login).findUnique();
+    }
+
+    public static Boolean isMember(String login, String password) {
+        return Ebean.find(Member.class).where().eq("login", login).eq("password", password).findRowCount() > 0;
+    }
 }

@@ -12,7 +12,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 
 @Entity
-@Table(name="Profile")
+@Table(name="tb_profile")
 public class Profile {
 	@Id
 	@GeneratedValue
@@ -20,9 +20,9 @@ public class Profile {
 	private String nom;
 	private String prenom;
 	private String sexe;
-	@OneToOne
-	private Member member;
 	private String role;
+        @OneToOne
+	private Member member;
         @Temporal(javax.persistence.TemporalType.DATE)
 	private Date dateNaissance;
         @Temporal(javax.persistence.TemporalType.DATE)

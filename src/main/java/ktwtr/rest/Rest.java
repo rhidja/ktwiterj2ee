@@ -19,7 +19,7 @@ public class Rest {
 	public String getMsg() {
             Member member = new Member();
             member.setLogin("ram");
-            member.setMotPasse("123");
+            member.setPassword("123");
             Ebean.save(member);
             
             String msg;
