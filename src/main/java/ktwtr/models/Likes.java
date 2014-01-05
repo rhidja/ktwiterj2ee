@@ -4,11 +4,12 @@
  */
 package ktwtr.models;
 
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 
@@ -18,16 +19,16 @@ import javax.persistence.Temporal;
  */
 @Entity
 @Table(name="tb_likes")
-public class Likes {
+public class Likes implements Serializable{
 
     @Id
     @GeneratedValue
     long Id;
-    @ManyToMany
+    @ManyToOne
     Member member;
-    @ManyToMany
+    @ManyToOne
     Post post;
-    @ManyToMany
+    @ManyToOne
     Comment comment;
     @Temporal(javax.persistence.TemporalType.DATE)
     Date dateLike;

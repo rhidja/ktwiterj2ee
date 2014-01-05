@@ -1,6 +1,7 @@
 package ktwtr.models;
 
 import com.avaje.ebean.Ebean;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -13,16 +14,16 @@ import javax.persistence.Temporal;
 
 @Entity
 @Table(name="tb_profile")
-public class Profile {
+public class Profile implements Serializable{
 	@Id
 	@GeneratedValue
 	private long id;
 	private String nom;
 	private String prenom;
 	private String sexe;
-	private String role;
-        @OneToOne
+	@OneToOne
 	private Member member;
+	private String roles;
         @Temporal(javax.persistence.TemporalType.DATE)
 	private Date dateNaissance;
         @Temporal(javax.persistence.TemporalType.DATE)
@@ -61,11 +62,11 @@ public class Profile {
 	public void setMember(Member member) {
 		this.member = member;
 	}
-	public String getRole() {
-		return role;
+	public String getRoles() {
+		return roles;
 	}
-	public void setRole(String role) {
-		this.role = role;
+	public void setRoles(String roles) {
+		this.roles = roles;
 	}
 	public Date getDateNaissance() {
 		return dateNaissance;

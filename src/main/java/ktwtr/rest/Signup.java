@@ -28,9 +28,9 @@ public class Signup {
         member.setPassword(password);
         Ebean.save(member);
         
-        Profile profile = new Profile();
-        profile.setMember(Member.getMember(login));
-        Ebean.save(profile);
+        //Profile profile = new Profile();
+        //profile.setMember(Member.getMember(login));
+        //Ebean.save(profile);
                 
         return "Member Signed up";  
     }

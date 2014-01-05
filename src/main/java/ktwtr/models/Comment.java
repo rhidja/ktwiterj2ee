@@ -1,6 +1,7 @@
 package ktwtr.models;
 
 import com.avaje.ebean.Ebean;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -15,7 +16,7 @@ import javax.persistence.Temporal;
 
 @Entity
 @Table(name = "tb_comment")
-public class Comment {
+public class Comment implements Serializable{
 
     @Id
     @GeneratedValue
@@ -26,7 +27,7 @@ public class Comment {
     @ManyToOne
     private Member autor;
     @OneToMany(cascade = {CascadeType.ALL})
-    private List<Likes> likes;   
+    private List<Likes> likes;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date commentDate;
 
@@ -62,7 +63,7 @@ public class Comment {
     public void setAutor(Member autor) {
         this.autor = autor;
     }
-
+    
     public Date getCommentDate() {
         return commentDate;
     }
@@ -70,6 +71,14 @@ public class Comment {
     public void setCommentDate(Date commentDate) {
         this.commentDate = commentDate;
     }
+    
+	public List<Likes> getLikes() {
+		return likes;
+	}
+
+	public void setLikes(List<Likes> likes) {
+		this.likes = likes;
+	}
 
     // Methodes statiques  ======================================================================
     public long getNbrLikes() {

@@ -1,6 +1,7 @@
 package ktwtr.models;
 
 import com.avaje.ebean.Ebean;
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -13,9 +14,9 @@ import javax.persistence.GeneratedValue;
 
 @Entity
 @Table(name = "tb_member")
-public class Member{
+public class Member implements Serializable{
 
-    @Id
+	@Id
     @GeneratedValue
     private long id;
     private String login;
@@ -31,7 +32,7 @@ public class Member{
     
     @OneToMany(mappedBy = "expediteur", cascade = {CascadeType.ALL})
     private List<Message> messages_envoyes;
-    @OneToMany(mappedBy = "recepteur", cascade = {CascadeType.ALL})
+    @OneToMany(mappedBy = "destinataire", cascade = {CascadeType.ALL})
     private List<Message> messages_recus;
     
     @OneToOne(mappedBy = "member", cascade = {CascadeType.ALL})

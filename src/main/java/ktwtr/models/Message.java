@@ -4,8 +4,8 @@
  */
 package ktwtr.models;
 
+import java.io.Serializable;
 import java.util.Date;
-import javax.annotation.Generated;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -19,7 +19,7 @@ import javax.persistence.Temporal;
  */
 @Entity
 @Table(name="tb_message")
-public class Message {
+public class Message implements Serializable{
 
     @Id
     @GeneratedValue
@@ -29,7 +29,7 @@ public class Message {
     @ManyToOne
     Member expediteur;
     @ManyToOne
-    Member recepteur;
+    Member destinataire;
     @Temporal(javax.persistence.TemporalType.DATE)
     Date dateEnvoi;
 
@@ -65,12 +65,12 @@ public class Message {
         this.expediteur = expiditeur;
     }
 
-    public Member getRecepteur() {
-        return recepteur;
+    public Member getDestinataire() {
+        return destinataire;
     }
 
-    public void setRecepteur(Member recepteur) {
-        this.recepteur = recepteur;
+    public void setDestinataire(Member destinataire) {
+        this.destinataire = destinataire;
     }
 
     public Date getDateEnvoi() {
@@ -79,6 +79,5 @@ public class Message {
 
     public void setDateEnvoi(Date dateEnvoi) {
         this.dateEnvoi = dateEnvoi;
-    }
-    
+    }    
 }
