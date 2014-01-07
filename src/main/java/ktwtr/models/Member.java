@@ -14,32 +14,29 @@ import javax.persistence.GeneratedValue;
 
 @Entity
 @Table(name = "tb_member")
-public class Member implements Serializable{
+public class Member implements Serializable {
 
-	@Id
+    @Id
     @GeneratedValue
     private long id;
     private String login;
     private String email;
     private String password;
-    
     @OneToOne(mappedBy = "member", cascade = {CascadeType.ALL})
     private Profile profile;
     @OneToMany(mappedBy = "autor", cascade = {CascadeType.ALL})
     private List<Post> posts;
     @OneToMany(mappedBy = "autor", cascade = {CascadeType.ALL})
     private List<Comment> comments;
-    
     @OneToMany(mappedBy = "expediteur", cascade = {CascadeType.ALL})
     private List<Message> messages_envoyes;
     @OneToMany(mappedBy = "destinataire", cascade = {CascadeType.ALL})
     private List<Message> messages_recus;
-    
     @OneToOne(mappedBy = "member", cascade = {CascadeType.ALL})
     private List<Likes> likedPosts;
     @OneToOne(mappedBy = "member", cascade = {CascadeType.ALL})
     private List<Likes> likedComments;
-    
+
     // Getters and Setters ================================================================================
     public long getId() {
         return id;
@@ -128,9 +125,8 @@ public class Member implements Serializable{
     public void setLikedComments(List<Likes> likedComments) {
         this.likedComments = likedComments;
     }
-    
+
     // Methodes statics ====================================================================================
-    
     public static List<Member> members() {
         return Ebean.find(Member.class).findList();
     }

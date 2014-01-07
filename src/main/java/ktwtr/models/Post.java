@@ -100,7 +100,11 @@ public class Post implements Serializable{
     public static List<Post> all() {
         return Ebean.find(Post.class).order().desc("postDate").findList();
     }
-
+    
+    public static long getNbrPosts() {
+        return Ebean.find(Post.class).findList().size();
+    }
+    
     public static List<Post> listPosts(String login, String wall) {
         return Ebean.find(Post.class).where().eq("login", login).eq("wall", wall).findList();
     }
@@ -109,7 +113,7 @@ public class Post implements Serializable{
         return Ebean.find(Post.class).where().eq("autor", member).findList();
     }
 
-    public static Post getPost(int postId) {
+    public static Post getPost(long postId) {
         return Ebean.find(Post.class).where().eq("id", postId).findUnique();
     }
 
