@@ -79,5 +79,5 @@ public class Message implements Serializable{
 
     public void setDateEnvoi(Date dateEnvoi) {
         this.dateEnvoi = dateEnvoi;
-    }    
+    }
 }

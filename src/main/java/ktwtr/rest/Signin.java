@@ -17,15 +17,15 @@ public class Signin {
     @Context
     HttpServletRequest request;
     
-    @POST
-    public String getMsg(@FormParam("login") String login, @FormParam("password") String password) {     
-        if(Member.isMember(login, password)){
-            HttpSession session = request.getSession(true);
-            session.setAttribute("login", login);
-            return session.getAttribute("login")+" Is connected";
-        }
-        else{
-            return "Is not connected";
-        }
-    }
+//    @POST
+//    public String getMsg(@FormParam("login") String login, @FormParam("password") String password) {     
+//        if(Member.isMember(login, password)){
+//            HttpSession session = request.getSession(true);
+//            session.setAttribute("login", login);
+//            return session.getAttribute("login")+" Is connected";
+//        }
+//        else{
+//            return "Is not connected";
+//        }
+//    }
 }

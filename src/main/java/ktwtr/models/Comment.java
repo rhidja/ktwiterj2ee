@@ -22,16 +22,18 @@ public class Comment implements Serializable{
     @GeneratedValue
     private long id;
     private String content;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date commentDate;
+    
     @ManyToOne
     private Post post;
     @ManyToOne
     private Member autor;
-    @OneToMany(cascade = {CascadeType.ALL})
-    private List<Likes> likes;
-    @Temporal(javax.persistence.TemporalType.DATE)
-    private Date commentDate;
+//    @OneToMany(cascade = {CascadeType.ALL})
+//    private List<Likes> likes;
 
-    // Getters and Setters =======================================================================
+
+//    // Getters and Setters =======================================================================
     public long getId() { // id
         return id;
     }
@@ -40,7 +42,7 @@ public class Comment implements Serializable{
         this.id = id;
     }
 
-    public String getContent() {// Content.
+    public String getContent() {
         return content;
     }
 
@@ -72,19 +74,19 @@ public class Comment implements Serializable{
         this.commentDate = commentDate;
     }
     
-	public List<Likes> getLikes() {
-		return likes;
-	}
-
-	public void setLikes(List<Likes> likes) {
-		this.likes = likes;
-	}
-
-    // Methodes statiques  ======================================================================
-    public long getNbrLikes() {
-        return this.likes.size();
-    }
-    
+//	public List<Likes> getLikes() {
+//		return likes;
+//	}
+//
+//	public void setLikes(List<Likes> likes) {
+//		this.likes = likes;
+//	}
+//
+//    // Methodes statiques  ======================================================================
+//    public long getNbrLikes() {
+//        return this.likes.size();
+//    }
+//    
     public static List<Comment> all() {
 
         return Ebean.find(Comment.class).findList();

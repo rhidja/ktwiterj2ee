@@ -27,10 +27,10 @@ public class Post implements Serializable{
 	private Date postDate;
 	@ManyToOne
 	private Member autor;
-	@OneToMany(cascade = { CascadeType.ALL })
-	private List<Comment> comments;
-	@OneToMany(cascade = { CascadeType.ALL })
-	private List<Likes> likes;
+//	@OneToMany(cascade = { CascadeType.ALL })
+//	private List<Comment> comments;
+//	@OneToMany(cascade = { CascadeType.ALL })
+//	private List<Likes> likes;
 
 	// Getters and Setters
 	// ==============================================================================
@@ -66,14 +66,6 @@ public class Post implements Serializable{
 		this.postDate = postDate;
 	}
 
-	public List<Comment> getComments() {
-		return comments;
-	}
-
-	public void setComments(List<Comment> comments) {
-		this.comments = comments;
-	}
-
 	public Member getAutor() {
 		return autor;
 	}
@@ -81,21 +73,28 @@ public class Post implements Serializable{
 	public void setAutor(Member autor) {
 		this.autor = autor;
 	}
-
-	public List<Likes> getLikes() {
-		return likes;
-	}
-
-	public void setLikes(List<Likes> likes) {
-		this.likes = likes;
-	}
+//	public List<Comment> getComments() {
+//		return comments;
+//	}
+//
+//	public void setComments(List<Comment> comments) {
+//		this.comments = comments;
+//	}
+//
+//	public List<Likes> getLikes() {
+//		return likes;
+//	}
+//
+//	public void setLikes(List<Likes> likes) {
+//		this.likes = likes;
+//	}
 
     
     
     // Methodes statics  ================================================================================
-    public long getNbrLikes() {
-        return this.likes.size();
-    }
+//    public long getNbrLikes() {
+//        return this.likes.size();
+//    }
     
     public static List<Post> all() {
         return Ebean.find(Post.class).order().desc("postDate").findList();
@@ -104,11 +103,6 @@ public class Post implements Serializable{
     public static long getNbrPosts() {
         return Ebean.find(Post.class).findList().size();
     }
-    
-    public static List<Post> listPosts(String login, String wall) {
-        return Ebean.find(Post.class).where().eq("login", login).eq("wall", wall).findList();
-    }
-
     public static List<Post> getPostsByM(Member member) {
         return Ebean.find(Post.class).where().eq("autor", member).findList();
     }

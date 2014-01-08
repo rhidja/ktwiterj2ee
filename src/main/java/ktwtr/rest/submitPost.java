@@ -42,7 +42,7 @@ public class submitPost {
         Post newpost = new Post();
         newpost.setAutor(member);
         newpost.setContent(post);
-        newpost.setPostDate(null);
+        //newpost.setPostDate(null);
         Ebean.save(newpost);
         List<Post> posts = find.findList();
         return Response.ok().entity(newpost).build();
