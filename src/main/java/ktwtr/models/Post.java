@@ -1,108 +1,98 @@
 package ktwtr.models;
 
 import com.avaje.ebean.Ebean;
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Table;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 
 @Entity
 @Table(name = "tb_post")
-public class Post implements Serializable{
+public class Post {
 
-	@Id
-	@GeneratedValue
-	private long id;
-	private String title;
-	private String content;
-        @Temporal(javax.persistence.TemporalType.DATE)
-	private Date postDate;
-	@ManyToOne
-	private Member autor;
-//	@OneToMany(cascade = { CascadeType.ALL })
-//	private List<Comment> comments;
-//	@OneToMany(cascade = { CascadeType.ALL })
-//	private List<Likes> likes;
+    @Id
+    @GeneratedValue
+    private long id;
+    private String title;
+    private String content;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date postDate;
+    private long postLikes;
+    @ManyToOne
+    private Member autor;
+    private List<Comment> comments;
 
-	// Getters and Setters
-	// ==============================================================================
-	public long getId() {
-		return id;
-	}
+    // Getters and Setters
+    // ==============================================================================
+    public long getId() {
+        return id;
+    }
 
-	public void setId(long id) {
-		this.id = id;
-	}
+    public void setId(long id) {
+        this.id = id;
+    }
 
-	public String getTitle() {
-		return title;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	public String getContent() {
-		return content;
-	}
+    public String getContent() {
+        return content;
+    }
 
-	public void setContent(String content) {
-		this.content = content;
-	}
+    public void setContent(String content) {
+        this.content = content;
+    }
 
-	public Date getPostDate() {
-		return postDate;
-	}
+    public Date getPostDate() {
+        return postDate;
+    }
 
-	public void setPostDate(Date postDate) {
-		this.postDate = postDate;
-	}
+    public void setPostDate(Date postDate) {
+        this.postDate = postDate;
+    }
 
-	public Member getAutor() {
-		return autor;
-	}
+    public long getPostLikes() {
+        return postLikes;
+    }
 
-	public void setAutor(Member autor) {
-		this.autor = autor;
-	}
-//	public List<Comment> getComments() {
-//		return comments;
-//	}
-//
-//	public void setComments(List<Comment> comments) {
-//		this.comments = comments;
-//	}
-//
-//	public List<Likes> getLikes() {
-//		return likes;
-//	}
-//
-//	public void setLikes(List<Likes> likes) {
-//		this.likes = likes;
-//	}
+    public void setPostLikes(long postLikes) {
+        this.postLikes = postLikes;
+    }
 
-    
-    
+    public Member getAutor() {
+        return autor;
+    }
+
+    public void setAutor(Member autor) {
+        this.autor = autor;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
     // Methodes statics  ================================================================================
-//    public long getNbrLikes() {
-//        return this.likes.size();
-//    }
-    
     public static List<Post> all() {
         return Ebean.find(Post.class).order().desc("postDate").findList();
     }
-    
+
     public static long getNbrPosts() {
         return Ebean.find(Post.class).findList().size();
     }
+
     public static List<Post> getPostsByM(Member member) {
         return Ebean.find(Post.class).where().eq("autor", member).findList();
     }

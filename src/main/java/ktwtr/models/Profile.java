@@ -14,7 +14,7 @@ import javax.persistence.Temporal;
 
 @Entity
 @Table(name = "tb_profile")
-public class Profile implements Serializable {
+public class Profile{
 
     @Id
     @GeneratedValue

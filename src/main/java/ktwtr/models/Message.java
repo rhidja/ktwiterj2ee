@@ -4,7 +4,6 @@
  */
 package ktwtr.models;
 
-import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,7 +18,7 @@ import javax.persistence.Temporal;
  */
 @Entity
 @Table(name="tb_message")
-public class Message implements Serializable{
+public class Message{
 
     @Id
     @GeneratedValue

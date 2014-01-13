@@ -1,22 +1,18 @@
 package ktwtr.models;
 
 import com.avaje.ebean.Ebean;
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.CascadeType;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Table;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 
 @Entity
 @Table(name = "tb_comment")
-public class Comment implements Serializable{
+public class Comment{
 
     @Id
     @GeneratedValue
@@ -92,10 +88,14 @@ public class Comment implements Serializable{
         return Ebean.find(Comment.class).findList();
     }
 
-    public static List<Comment> getComments(Post post) {
+    public static List<Comment> getCmntsByPost(Post post) {
         return Ebean.find(Comment.class).where().eq("post", post).findList();
     }
-
+    
+    public static long nbrCmntsByPost(Post post) {
+        return Ebean.find(Comment.class).where().eq("post", post).findRowCount();
+    }
+    
     public static Comment getComment(long id) {
         return Ebean.find(Comment.class).where().eq("id", id).findUnique();
     }

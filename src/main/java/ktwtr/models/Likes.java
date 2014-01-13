@@ -4,8 +4,10 @@
  */
 package ktwtr.models;
 
+import com.avaje.ebean.Ebean;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -18,8 +20,8 @@ import javax.persistence.Temporal;
  * @author ram
  */
 @Entity
-@Table(name="tb_likes")
-public class Likes implements Serializable{
+@Table(name = "tb_likes")
+public class Likes {
 
     @Id
     @GeneratedValue
@@ -71,5 +73,36 @@ public class Likes implements Serializable{
 
     public void setDateLike(Date dateLike) {
         this.dateLike = dateLike;
+    }
+
+    // Methodes statics  ================================================================================
+    
+    // Nombre de likes par Post.
+    public static long nbrLikesPerPost(Post post) {
+        return Ebean.find(Likes.class).where().eq("post", post).findRowCount();
+    }
+
+    // Nombre de likes par Commentaire.
+    public static long nbrLikesPerComment(Comment comment) {
+        return Ebean.find(Likes.class).where().eq("comment", comment).findRowCount();
+    }
+
+    // Verifier si un membre "member" a fait un like pour le post "post".
+    public static Boolean isLikedPost(Post post, Member member) {
+        return Ebean.find(Likes.class).where().eq("post", post).eq("member", member).findRowCount() > 0;
+    }
+
+    // Verifier si un membre "member" a fait un like pour le commentaire "comment".
+    public static Boolean isLikedComment(Comment comment, Member member) {
+        return Ebean.find(Likes.class).where().eq("comment", comment).eq("member", member).findRowCount() > 0;
+    }
+
+    //
+    public static Likes getLikeByPostMember(Post post, Member member) {
+        return Ebean.find(Likes.class).where().eq("post", post).eq("member", member).findUnique();
+    }
+
+    public static Likes getLikeByCommentMember(Comment comment, Member member) {
+        return Ebean.find(Likes.class).where().eq("comment", comment).eq("member", member).findUnique();
     }
 }

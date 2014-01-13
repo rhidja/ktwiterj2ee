@@ -14,7 +14,7 @@ import javax.persistence.GeneratedValue;
 
 @Entity
 @Table(name = "tb_member")
-public class Member implements Serializable {
+public class Member {
 
     @Id
     @GeneratedValue
@@ -22,6 +22,8 @@ public class Member implements Serializable {
     private String login;
     private String email;
     private String password;
+//    @OneToMany
+    private List<Post> posts;
 //    @OneToOne(cascade = {CascadeType.ALL})
 //    private Profile profile;
 //    @OneToMany(cascade = {CascadeType.ALL})
@@ -76,14 +78,14 @@ public class Member implements Serializable {
 //        this.profile = profile;
 //    }
 
-//    public List<Post> getPosts() {
-//        return posts;
-//    }
-//
-//    public void setPosts(List<Post> posts) {
-//        this.posts = posts;
-//    }
-//
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
+    }
+
 //    public List<Comment> getComments() {
 //        return comments;
 //    }

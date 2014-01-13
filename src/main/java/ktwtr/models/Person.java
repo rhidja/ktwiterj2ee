@@ -4,23 +4,24 @@
  */
 package ktwtr.models;
 
+import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 
 /**
  *
  * @author ram
  */
 @Entity
-public class Person {
+public class Person implements Serializable {
     @Id
     @GeneratedValue
     private long id;
     private String nom;
     private String prenom;
-    @OneToOne
+    @ManyToOne
     private User user;
 
     public long getId() {

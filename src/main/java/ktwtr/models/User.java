@@ -10,6 +10,7 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import ktwtr.models.Person;
@@ -20,14 +21,14 @@ import ktwtr.models.Person;
  */
 @Entity
 @Table(name="tb_user")
-public class User implements Serializable{
+public class User{
     @Id
     @GeneratedValue
     private long id;
     private String login;
     private String pwd;
-    @OneToOne
-    private Person person;
+    @OneToMany
+    private List<Person> persons;
 
     public long getId() {
         return id;
@@ -53,15 +54,19 @@ public class User implements Serializable{
         this.pwd = pwd;
     }
 
-    public Person getPerson() {
-        return person;
+    public List<Person> getPersons() {
+        return persons;
     }
 
-    public void setPerson(Person person) {
-        this.person = person;
+    public void setPersons(List<Person> persons) {
+        this.persons = persons;
     }
     
     public static List<User> getUsers(){
         return Ebean.find(User.class).findList();
+    }
+    
+    public static User getUser(String login){
+        return Ebean.find(User.class).where().eq("login", login).findUnique();
     }
 }

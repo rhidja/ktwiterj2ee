@@ -17,9 +17,9 @@ import ktwtr.models.Member;
  */
 @Path("/admin")
 public class admin {
-//    @GET
-//    @Produces({MediaType.APPLICATION_JSON})
-//    public List<Member> members (){
-//        return Member.members();
-//    }
+    @GET
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<Member> members (){
+        return Member.members();
+    }
 }
