@@ -23,39 +23,54 @@ import ktwtr.models.*;
  */
 @Path("/ctrlposts")
 public class CtrlPosts {
+
     @Context
     HttpServletRequest request;
 
     @Path("/submitpost")
     @POST
-    @Produces({MediaType.APPLICATION_JSON}) 
-    public Response  submitPost(@FormParam("post") String post) {
-        
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response submitPost(@FormParam("post") String post) {
+
         HttpSession session = request.getSession(true);
         Member member = Member.getMember(session.getAttribute("login").toString());
-        
-        Post newpost = new Post();        
+
+        Post newpost = new Post();
         newpost.setAutor(member);
         newpost.setContent(post);
         Post.setPost(newpost);
-        
+
         List<Post> posts = Post.all();
-        for(int i=0;i<posts.size();i++){
+        for (int i = 0; i < posts.size(); i++) {
             posts.get(i).setComments(Comment.getCmntsByPost(posts.get(i)));
             posts.get(i).setPostLikes(Likes.nbrLikesPerPost(posts.get(i)));
         }
         return Response.ok().entity(posts).build();
     }
+
     @Path("/deletepost")
     @POST
-    @Produces({MediaType.APPLICATION_JSON}) 
-    public Response  deletePost(@FormParam("post-id") long postid) {
-        
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response deletePost(@FormParam("post-id") long postid) {
+
         Post post = Post.getPost(postid);
         List<Comment> comments = Comment.getCmntsByPost(post);
         Ebean.delete(comments);
         Ebean.delete(post);
         List<Post> posts = Post.all();
         return Response.ok().entity(posts).build();
-    }    
+    }
+
+    @Path("/allposts")
+    @POST
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response allPost() {
+        List<Post> posts = Post.all();
+        for (int i = 0; i < posts.size(); i++) {
+            posts.get(i).setComments(Comment.getCmntsByPost(posts.get(i)));
+            posts.get(i).setPostLikes(Likes.nbrLikesPerPost(posts.get(i)));
+        }
+        return Response.ok().entity(posts).build();
+
+    }
 }

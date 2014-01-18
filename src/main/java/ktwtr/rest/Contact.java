@@ -14,13 +14,13 @@ import javax.ws.rs.core.Response;
  *
  * @author ram
  */
-@Path("/about")
-public class About {
+@Path("/contact")
+public class Contact {
 
     @GET
     @Produces("text/html")
-    public Response getAbout() {
-        Viewable viewable = new Viewable("/about.html");
+    public Response getContact() {
+        Viewable viewable = new Viewable("/contact.html");
         return Response.ok(viewable).build();
     }
 }

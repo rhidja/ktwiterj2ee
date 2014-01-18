@@ -43,7 +43,12 @@ public class CtrlComments {
         Comment.setComment(newcomment);
 
         List<Post> posts = Post.all();
-        List<Comment> comments;
+        List<Comment> comments = Comment.all();
+        
+        for (int i = 0; i < comments.size(); i++) {
+            comments.get(i).setCommentLikes(Likes.nbrLikesPerComment(comments.get(i)));
+        }
+        
         for (int i = 0; i < posts.size(); i++) {
             posts.get(i).setComments(Comment.getCmntsByPost(posts.get(i)));
             posts.get(i).setPostLikes(Likes.nbrLikesPerPost(posts.get(i)));

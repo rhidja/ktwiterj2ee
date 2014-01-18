@@ -17,6 +17,5 @@ public class SigninForm {
     public void doPost( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException{
         String login = request.getParameter( "login" );
         String password = request.getParameter( "motPasse" );
-    }    
-
+    }
 }

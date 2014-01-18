@@ -5,22 +5,53 @@
 package ktwtr.rest;
 
 import com.avaje.ebean.Ebean;
+import com.sun.jersey.api.view.Viewable;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import javax.print.DocFlavor;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
+import ktwtr.models.Member;
 import ktwtr.models.Person;
 import ktwtr.models.User;
+import org.h2.engine.Session;
 
 /**
  *
  * @author ram
  */
-@Path("/users")
+@Path("/test")
 public class Rest {
-    
+
+    @Context
+    HttpServletRequest request;
+
+    @Path("/link")
+    @GET
+    @Produces({MediaType.TEXT_HTML})
+    public Response bldlink() {
+
+        HttpSession session = request.getSession(true);
+        String test;
+        if(session.isNew()){
+            test = "ok";
+        }else{
+            test ="notOk";
+        }
+        return Response.ok().entity(test).build();
+    }
+
+    @Path("/users")
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public Response listUsers() {
@@ -56,7 +87,7 @@ public class Rest {
         List<User> users = User.getUsers();
 
         user = User.getUser("ram");
-        
+
 
         return Response.ok().entity(user).build();
     }

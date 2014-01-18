@@ -1,7 +1,25 @@
 $(document).ready(function($) {
+ 
+    
     $(".btn-home").click(function(e) {
-        window.location = '/';
+        window.location = 'http://localhost:9000/ktwiter/rest/about';
     });
+    
+    $(".btn-test").click(function(e) {
+        $.ajax({
+            type: 'GET',
+            url: 'rest/test/link',
+            contentType: "text/html; charset=UTF-8",
+            success: function(data) {
+                if(data=="fail"){
+                    $('article').load('signin.html');
+                }else{
+                    setCookie("login",data, 1);
+                }
+            }
+        });
+    });
+    
     $(".btn-admin").click(function(e) {
         $('article').load('admin.html');
         $.ajax({
@@ -9,9 +27,6 @@ $(document).ready(function($) {
             url: 'rest/admin',
             contentType: "application/json; charset=UTF-8",
             success: function(json) {
-                //if(json.size()==0){
-                    //$(".list-group").append("<h2>Aucun membre n'est inscrit</h2>");                    
-                //}else{
                     $.each(json, function(index, value) {
                         $(".list-group").append(
                             '<li class="list-group-item">'+
@@ -29,15 +44,15 @@ $(document).ready(function($) {
                             '</li>'
                         );
                     });
-                //}
+               
             }
         });
     });
     $(".btn-about").click(function(e) {
-        $('article').load('about.html');
+        $('article').load('rest/about');
     });
     $(".btn-contact").click(function(e) {
-        $('article').load('/contact');
+        $('article').load('rest/contact');
     });
 
 //=================================================================================================================
@@ -56,26 +71,31 @@ $(document).ready(function($) {
         $password = $("#ipt_password").val();
         $.ajax({
             type: 'POST',
-            url: 'rest/signin',
-            contentType: "application/json; charset=UTF-8",
+            url: 'rest/ctrlsessions/signin',
+            contentType: "text/html; charset=UTF-8",
             data: "login="+$login+"&password="+$password,
             success: function(data) {
-                alert(data);
-                //window.location = '/';
+                setCookie("login", data, 1);
+                if(data!="fail"){
+                    window.location = '/ktwiter';
+                }else{
+                    $('article').load('signin.html');
+                }
             }
         });
         return false;
     });
 
     // Se deconnecter.
-//    $(".btn-logout").on("click", function(e) {
-//        $.ajax({
-//            url: '/logout',
-//            success: function(data) {
-//                window.location = '/';
-//            }
-//        });
-//    });
+    $("header").on("click",".btn-logout",function(e) {
+        $.ajax({
+            url: 'rest/ctrlsessions/signout',
+            success: function(login) {
+                setCookie("login", login, -1);
+                window.location = '/ktwiter';
+            }
+        });
+    });
 
 //=================================================================================================================
 //==========================================     Member    ========================================================
@@ -179,62 +199,113 @@ $(document).ready(function($) {
             contentType: "application/json; charset=UTF-8",
             data: "post="+$post,
             success: function(json) {
+                $('article').html("");
                 $('article').append('<link rel="stylesheet" media="screen" href="css/post.css">')
-                $.each(json, function(index, value) {
-                    $('article').append(
-                        '<div class="row post">'+
-                            '<div class="panel panel-default">'+
-                                '<div class="panel-heading">'+
-                                    '<div class="row">'+
-                                        '<div class="col-md-1">'+
-                                            '<img src="img/avatar.png" class="img-circle img-responsive" alt=""/>'+
-                                        '</div>'+
-                                        '<div>'+
-                                            'By :'+
-                                            '<a href="#" class="autor-login">'+
-                                                '<b>'+value.autor.login+'</b>'+
-                                            '</a>'+
-                                            '<p>'+value.content+'</p>'+
-                                        '</div>'+
-                                    '</div>'+
-                                    '<div class="row action">'+
-                                        '<button type="button" class="btn btn-primary btn-xs col-md-offset-1 btn-comment" title="Comment">'+
-                                            '<span class="glyphicon glyphicon-comment"></span>'+
-                                        '</button>'+
-                                        '<button type="button" class="btn btn-primary btn-xs">'+
-                                            '<span class="glyphicon">'+value.comments.length+'</span>'+
-                                        '</button>'+						
-                                        '|'+ 
-                                        '<button type="button" class="btn btn-primary btn-xs pst-like" title="Like">'+
-                                            '<span class="glyphicon glyphicon-thumbs-up"></span>'+
-                                        '</button>'+
-                                        '|'+
-                                        '<button type="button" class="btn btn-primary btn-xs">'+
-                                            '<span class="glyphicon">'+value.postLikes+' Likes</span>'+
-                                        '</button>'+						
-                                        '<button type="button" class="btn btn-danger btn-xs pst-delete" title="Delete">'+
-                                            '<span class="glyphicon glyphicon-trash"></span>'+
-                                        '</button>'+
-                                        '<span class="mic-info pull-right btn-xs">'+
-                                            'In: <a href="#">Montpellier</a> on '+value.getPostDate+
-                                        '</span>'+
-                                    '</div>'+
-                                    '<div class="row hidden">'+
-                                        '<form class="frm-comment">'+
-                                            '<input type="hidden" id="post-id" value="'+value.id+'">'+
-                                            '<input type="text" id="comment-cnt" class="col-md-offset-1 col-md-11" placeholder="Write a comment...">'+
-                                            '<input type="submit" class="hidden"/>'+
-                                        '</form>'+
-                                    '</div>'+
-                                '</div>'+
-                                '<div class="panel-body">'+
-                                    '<ul class="list-group row comments">'+
-                                    '</ul>'+
-                                '</div>'+
-                            '</div>'+
-                        '</div>'
-                    );    
-                });
+                affichage(json);
+//                
+//                $.each(json, function(index, post) {
+//                    $('article').append(
+//                        '<div class="row post">'+
+//                            '<div class="panel panel-default">'+
+//                                '<div class="panel-heading">'+
+//                                    '<div class="row">'+
+//                                        '<div class="col-md-1">'+
+//                                            '<img src="img/avatar.png" class="img-circle img-responsive" alt=""/>'+
+//                                        '</div>'+
+//                                        '<div>'+
+//                                            'By :'+
+//                                            '<a href="#" class="autor-login">'+
+//                                                '<b>'+post.autor.login+'</b>'+
+//                                            '</a>'+
+//                                            '<p>'+post.content+'</p>'+
+//                                        '</div>'+
+//                                    '</div>'+
+//                                    '<div class="row action">'+
+//                                        '<button type="button" class="btn btn-primary btn-xs col-md-offset-1 btn-comment" title="Comment">'+
+//                                            '<span class="glyphicon glyphicon-comment"></span>'+
+//                                        '</button>'+
+//                                        '<button type="button" class="btn btn-primary btn-xs">'+
+//                                            '<span class="glyphicon">'+post.comments.length+'</span>'+
+//                                        '</button>'+						
+//                                        '|'+ 
+//                                        '<button type="button" class="btn btn-primary btn-xs pst-like" title="Like">'+
+//                                            '<span class="glyphicon glyphicon-thumbs-up"></span>'+
+//                                        '</button>'+
+//                                        '|'+
+//                                        '<button type="button" class="btn btn-primary btn-xs">'+
+//                                            '<span class="glyphicon">'+post.postLikes+' Likes</span>'+
+//                                        '</button>'+						
+//                                        '<button type="button" class="btn btn-danger btn-xs pst-delete" title="Delete">'+
+//                                            '<span class="glyphicon glyphicon-trash"></span>'+
+//                                        '</button>'+
+//                                        '<span class="mic-info pull-right btn-xs">'+
+//                                            'In: <a href="#">Montpellier</a> on '+post.getPostDate+
+//                                        '</span>'+
+//                                    '</div>'+
+//                                    '<div class="row hidden">'+
+//                                        '<form class="frm-comment">'+
+//                                            '<input type="hidden" id="post-id" value="'+post.id+'">'+
+//                                            '<input type="text" id="comment-cnt" class="col-md-offset-1 col-md-11" placeholder="Write a comment...">'+
+//                                            '<input type="submit" class="hidden"/>'+
+//                                        '</form>'+
+//                                    '</div>'+
+//                                '</div>'+
+//                                '<div class="panel-body">'+
+//                                    '<ul class="list-group row comments1">'+
+//                                    
+//                                    '</ul>'+
+//                                '</div>'+
+//                            '</div>'+
+//                        '</div>'
+//                    );
+//                    $.each(post.comments, function(indx, cmnt) {                     
+//                        $('.comments1').append(
+//                             '<li class="list-group-item col-md-offset-1">'+
+//                                 '<div class="comment-row">'+
+//                                     '<input type="hidden" id="comment-id" value="'+cmnt.id+'"/>'+
+//                                     '<div class="col-md-1">'+
+//                                         '<img src="img/avatar.png" class="img-circle img-responsive" alt="" />'+
+//                                     '</div>'+
+//                                     '<div>'+
+//                                         '<div>'+
+//                                             'By : '+
+//                                             '<a href="#" class="autor-login">'+
+//                                                 '<b>'+cmnt.autor.login+'</b>'+
+//                                             '</a>'+
+//                                         '</div>'+
+//                                         '<div class="comment-text">'+
+//                                             cmnt.content+
+//                                         '</div>'+
+//                                         '<div class="action col-md-offset-1">'+
+////                                             '@if(Likes.isLikedComment(com, Member.getMember(session().get("Connected")))){'+
+////                                                 '<button type="button" class="btn btn-primary btn-xs cmt-like" title="Like">'+
+////                                                     '<span class="glyphicon glyphicon-thumbs-down"></span>'+
+////                                                 '</button>'+
+////                                             '}else{'+
+//                                                 '<button type="button" class="btn btn-primary btn-xs cmt-like" title="Like">'+
+//                                                     '<span class="glyphicon glyphicon-thumbs-up"></span>'+
+//                                                 '</button>'+
+////
+////                                             '}'+
+//                                             '<button type="button" class="btn btn-primary btn-xs">'+
+//                                                 '<span class="glyphicon">'+cmnt.commentLikes+'</span>'+
+//                                             '</button>'+
+////                                                 '@if(com.getAutor.getLogin==member){'+
+////                                                     '|'+ 
+//                                                     '<button type="button" class="btn btn-danger btn-xs cmt-delete" title="Delete">'+
+//                                                         '<span class="glyphicon glyphicon-trash"></span>'+
+//                                                     '</button>'+
+////                                                 '}'+
+//                                                 '<span class="mic-info pull-right btn-xs">'+
+//                                                     'In: <a href="#">Montpellier</a> on :'+cmnt.commentDate+
+//                                                 '</span>'+
+//                                         '</div>'+
+//                                     '</div>'+
+//                                 '</div>'+
+//                             '</li>'
+//                         );
+//                    });    
+//                });
                
                 $("#ipt-post").val('');
                 //$("article").html(data);
@@ -328,8 +399,57 @@ $(document).ready(function($) {
             contentType: "application/json; charset=UTF-8",
             data: "post-id="+$postid+"&comment="+$comment,
             success: function(data) {
-                alert(data);
-                //$("article").html(data);
+//                $('article').append('<link rel="stylesheet" media="screen" href="css/post.css">')
+//                $('article').append('<ul class="list-group row comments"></ul>');                
+//                $.each(json, function(index, value) {
+//                $('.comments').append(
+//                    '<li class="list-group-item col-md-offset-1">'+
+//                        '<div class="comment-row">'+
+//                            '<input type="hidden" id="comment-id" value="'+value.id+'"/>'+
+//                            '<div class="col-md-1">'+
+//				'<img src="img/avatar.png" class="img-circle img-responsive" alt="" />'+
+//                            '</div>'+
+//                            '<div>'+
+//				'<div>'+
+//                                    'By : '+
+//                                    '<a href="#" class="autor-login">'+
+//                                        '<b>'+value.login+'</b>'+
+//                                    '</a>'+
+//				'</div>'+
+//				'<div class="comment-text">'+
+//                                    value.content+
+//                                '</div>'+
+//				'<div class="action col-md-offset-1">'+
+//                                    '@if(Likes.isLikedComment(com, Member.getMember(session().get("Connected")))){'+
+//                                        '<button type="button" class="btn btn-primary btn-xs cmt-like" title="Like">'+
+//                                            '<span class="glyphicon glyphicon-thumbs-down"></span>'+
+//                                        '</button>'+
+//                                    '}else{'+
+//                                        '<button type="button" class="btn btn-primary btn-xs cmt-like" title="Like">'+
+//                                            '<span class="glyphicon glyphicon-thumbs-up"></span>'+
+//                                        '</button>'+
+//
+//                                    '}'+
+//                                    '<button type="button" class="btn btn-primary btn-xs">'+
+//                                        '<span class="glyphicon">@com.getLikeComment</span>'+
+//                                    '</button>'+
+//					'@if(com.getAutor.getLogin==member){'+
+//                                            '|'+ 
+//                                            '<button type="button" class="btn btn-danger btn-xs cmt-delete" title="Delete">'+
+//                                                '<span class="glyphicon glyphicon-trash"></span>'+
+//                                            '</button>'+
+//                                        '}'+
+//					'<span class="mic-info pull-right btn-xs">'+
+//                                            'In: <a href="#">Montpellier</a> on : @com.getCommentDate.format("MMMM dd") at : @com.getCommentDate.format("hh:mm")'+
+//					'</span>'+
+//				'</div>'+
+//                            '</div>'+
+//                        '</div>'+
+//                    '</li>'
+//                );
+//                });
+//                alert(data);
+//                //$("article").html(data);
             }
         });
         return false;
@@ -407,4 +527,111 @@ $(document).ready(function($) {
 //            }
 //        });
 //    });
+
+    function affichage(json){
+                $.each(json, function(index, post) {
+                    $('article').append(
+                        '<div class="row post">'+
+                            '<div class="panel panel-default">'+
+                                '<div class="panel-heading">'+
+                                    '<div class="row">'+
+                                        '<div class="col-md-1">'+
+                                            '<img src="img/avatar.png" class="img-circle img-responsive" alt=""/>'+
+                                        '</div>'+
+                                        '<div>'+
+                                            'By :'+
+                                            '<a href="#" class="autor-login">'+
+                                                '<b>'+post.autor.login+'</b>'+
+                                            '</a>'+
+                                            '<p>'+post.content+'</p>'+
+                                        '</div>'+
+                                    '</div>'+
+                                    '<div class="row action">'+
+                                        '<button type="button" class="btn btn-primary btn-xs col-md-offset-1 btn-comment" title="Comment">'+
+                                            '<span class="glyphicon glyphicon-comment"></span>'+
+                                        '</button>'+
+                                        '<button type="button" class="btn btn-primary btn-xs">'+
+                                            '<span class="glyphicon">'+post.comments.length+'</span>'+
+                                        '</button>'+						
+                                        '|'+ 
+                                        '<button type="button" class="btn btn-primary btn-xs pst-like" title="Like">'+
+                                            '<span class="glyphicon glyphicon-thumbs-up"></span>'+
+                                        '</button>'+
+                                        '|'+
+                                        '<button type="button" class="btn btn-primary btn-xs">'+
+                                            '<span class="glyphicon">'+post.postLikes+' Likes</span>'+
+                                        '</button>'+						
+                                        '<button type="button" class="btn btn-danger btn-xs pst-delete" title="Delete">'+
+                                            '<span class="glyphicon glyphicon-trash"></span>'+
+                                        '</button>'+
+                                        '<span class="mic-info pull-right btn-xs">'+
+                                            'In: <a href="#">Montpellier</a> on '+post.getPostDate+
+                                        '</span>'+
+                                    '</div>'+
+                                    '<div class="row hidden">'+
+                                        '<form class="frm-comment">'+
+                                            '<input type="hidden" id="post-id" value="'+post.id+'">'+
+                                            '<input type="text" id="comment-cnt" class="col-md-offset-1 col-md-11" placeholder="Write a comment...">'+
+                                            '<input type="submit" class="hidden"/>'+
+                                        '</form>'+
+                                    '</div>'+
+                                '</div>'+
+                                '<div class="panel-body">'+
+                                    '<ul class="list-group row comments1">'+
+                                    
+                                    '</ul>'+
+                                '</div>'+
+                            '</div>'+
+                        '</div>'
+                    );
+                    $.each(post.comments, function(indx, cmnt) {                     
+                        $('.comments1').append(
+                             '<li class="list-group-item col-md-offset-1">'+
+                                 '<div class="comment-row">'+
+                                     '<input type="hidden" id="comment-id" value="'+cmnt.id+'"/>'+
+                                     '<div class="col-md-1">'+
+                                         '<img src="img/avatar.png" class="img-circle img-responsive" alt="" />'+
+                                     '</div>'+
+                                     '<div>'+
+                                         '<div>'+
+                                             'By : '+
+                                             '<a href="#" class="autor-login">'+
+                                                 '<b>'+cmnt.autor.login+'</b>'+
+                                             '</a>'+
+                                         '</div>'+
+                                         '<div class="comment-text">'+
+                                             cmnt.content+
+                                         '</div>'+
+                                         '<div class="action col-md-offset-1">'+
+//                                             '@if(Likes.isLikedComment(com, Member.getMember(session().get("Connected")))){'+
+//                                                 '<button type="button" class="btn btn-primary btn-xs cmt-like" title="Like">'+
+//                                                     '<span class="glyphicon glyphicon-thumbs-down"></span>'+
+//                                                 '</button>'+
+//                                             '}else{'+
+                                                 '<button type="button" class="btn btn-primary btn-xs cmt-like" title="Like">'+
+                                                     '<span class="glyphicon glyphicon-thumbs-up"></span>'+
+                                                 '</button>'+
+//
+//                                             '}'+
+                                             '<button type="button" class="btn btn-primary btn-xs">'+
+                                                 '<span class="glyphicon">'+cmnt.commentLikes+'</span>'+
+                                             '</button>'+
+//                                                 '@if(com.getAutor.getLogin==member){'+
+//                                                     '|'+ 
+                                                     '<button type="button" class="btn btn-danger btn-xs cmt-delete" title="Delete">'+
+                                                         '<span class="glyphicon glyphicon-trash"></span>'+
+                                                     '</button>'+
+//                                                 '}'+
+                                                 '<span class="mic-info pull-right btn-xs">'+
+                                                     'In: <a href="#">Montpellier</a> on :'+cmnt.commentDate+
+                                                 '</span>'+
+                                         '</div>'+
+                                     '</div>'+
+                                 '</div>'+
+                             '</li>'
+                         );
+                    });    
+                });
+
+    }
 });

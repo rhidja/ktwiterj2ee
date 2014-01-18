@@ -20,7 +20,7 @@ public class Comment{
     private String content;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date commentDate;
-    
+    private long commentLikes;
     @ManyToOne
     private Post post;
     @ManyToOne
@@ -69,20 +69,20 @@ public class Comment{
     public void setCommentDate(Date commentDate) {
         this.commentDate = commentDate;
     }
+
     
-//	public List<Likes> getLikes() {
-//		return likes;
-//	}
-//
-//	public void setLikes(List<Likes> likes) {
-//		this.likes = likes;
-//	}
-//
+    public long getCommentLikes() {
+        return commentLikes;
+    }
+
+    public void setCommentLikes(long commentLikes) {
+        this.commentLikes = commentLikes;
+    }
+    
+
+
 //    // Methodes statiques  ======================================================================
-//    public long getNbrLikes() {
-//        return this.likes.size();
-//    }
-//    
+ 
     public static List<Comment> all() {
 
         return Ebean.find(Comment.class).findList();
