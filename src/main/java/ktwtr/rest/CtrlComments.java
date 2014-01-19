@@ -44,13 +44,34 @@ public class CtrlComments {
 
         List<Post> posts = Post.all();
         List<Comment> comments = Comment.all();
-        
+
         for (int i = 0; i < comments.size(); i++) {
             comments.get(i).setCommentLikes(Likes.nbrLikesPerComment(comments.get(i)));
         }
-        
+
         for (int i = 0; i < posts.size(); i++) {
             posts.get(i).setComments(Comment.getCmntsByPost(posts.get(i)));
+            posts.get(i).setPostLikes(Likes.nbrLikesPerPost(posts.get(i)));
+        }
+        return Response.ok().entity(posts).build();
+    }
+
+    @Path("/deletecomment")
+    @POST
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response deletePost(@FormParam("comment-id") long cmntid) {
+        Comment comment = Comment.getComment(cmntid);
+        List<Likes> likes = Likes.getLikesByComment(comment);
+        Ebean.delete(likes);
+        Ebean.delete(comment);
+
+        List<Post> posts = Post.all();
+        for (int i = 0; i < posts.size(); i++) {
+            List<Comment> comments = Comment.getCmntsByPost(posts.get(i));
+            for (int j = 0; j < comments.size(); j++) {
+                comments.get(j).setCommentLikes(Likes.nbrLikesPerComment(comments.get(j)));
+            }
+            posts.get(i).setComments(comments);
             posts.get(i).setPostLikes(Likes.nbrLikesPerPost(posts.get(i)));
         }
         return Response.ok().entity(posts).build();

@@ -77,6 +77,14 @@ public class Likes {
 
     // Methodes statics  ================================================================================
     
+    public static List<Likes> getLikesByPost(Post post) {
+        return Ebean.find(Likes.class).where().eq("post", post).findList();
+    }
+    
+    public static List<Likes> getLikesByComment(Comment comment) {
+        return Ebean.find(Likes.class).where().eq("comment", comment).findList();
+    }
+    
     // Nombre de likes par Post.
     public static long nbrLikesPerPost(Post post) {
         return Ebean.find(Likes.class).where().eq("post", post).findRowCount();

@@ -39,10 +39,10 @@ public class CtrlLikes {
         Member member = Member.getMember(session.getAttribute("login").toString());
         Post post = Post.getPost(postid);
 
-        if(Likes.isLikedPost(post, member)){
+        if (Likes.isLikedPost(post, member)) {
             Likes like = Likes.getLikeByPostMember(post, member);
             Ebean.delete(like);
-        }else{
+        } else {
             Likes newlike = new Likes();
             newlike.setMember(member);
             newlike.setPost(post);
@@ -50,14 +50,17 @@ public class CtrlLikes {
         }
 
         List<Post> posts = Post.all();
-        List<Comment> comments;
         for (int i = 0; i < posts.size(); i++) {
-            posts.get(i).setComments(Comment.getCmntsByPost(posts.get(i)));
+            List<Comment> comments = Comment.getCmntsByPost(posts.get(i));
+            for (int j = 0; j < comments.size(); j++) {
+                comments.get(j).setCommentLikes(Likes.nbrLikesPerComment(comments.get(j)));
+            }
+            posts.get(i).setComments(comments);
             posts.get(i).setPostLikes(Likes.nbrLikesPerPost(posts.get(i)));
         }
         return Response.ok().entity(posts).build();
     }
-    
+
     @Path("/likecomment")
     @POST
     @Produces({MediaType.APPLICATION_JSON})
@@ -67,10 +70,10 @@ public class CtrlLikes {
         Member member = Member.getMember(session.getAttribute("login").toString());
         Comment comment = Comment.getComment(commentid);
 
-        if(Likes.isLikedComment(comment, member)){
+        if (Likes.isLikedComment(comment, member)) {
             Likes like = Likes.getLikeByCommentMember(comment, member);
             Ebean.delete(like);
-        }else{
+        } else {
             Likes newlike = new Likes();
             newlike.setMember(member);
             newlike.setComment(comment);
@@ -78,12 +81,14 @@ public class CtrlLikes {
         }
 
         List<Post> posts = Post.all();
-        List<Comment> comments;
         for (int i = 0; i < posts.size(); i++) {
-            posts.get(i).setComments(Comment.getCmntsByPost(posts.get(i)));
+            List<Comment> comments = Comment.getCmntsByPost(posts.get(i));
+            for (int j = 0; j < comments.size(); j++) {
+                comments.get(j).setCommentLikes(Likes.nbrLikesPerComment(comments.get(j)));
+            }
+            posts.get(i).setComments(comments);
             posts.get(i).setPostLikes(Likes.nbrLikesPerPost(posts.get(i)));
         }
         return Response.ok().entity(posts).build();
     }
-    
 }
