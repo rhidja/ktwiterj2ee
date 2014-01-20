@@ -90,9 +90,12 @@ public class Post {
     }
 
     public static long getNbrPosts() {
-        return Ebean.find(Post.class).findList().size();
+        return Ebean.find(Post.class).findRowCount();
     }
-
+    
+    public static long nbrPostsByMember(Member member) {
+        return Ebean.find(Post.class).where().eq("autor",member).findRowCount();
+    }
     public static List<Post> getPostsByM(Member member) {
         return Ebean.find(Post.class).where().eq("autor", member).findList();
     }

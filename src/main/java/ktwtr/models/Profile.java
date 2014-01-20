@@ -1,7 +1,6 @@
 package ktwtr.models;
 
 import com.avaje.ebean.Ebean;
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 

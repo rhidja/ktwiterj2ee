@@ -4,6 +4,7 @@
  */
 package ktwtr.models;
 
+import com.avaje.ebean.Ebean;
 import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -78,5 +79,11 @@ public class Message{
 
     public void setDateEnvoi(Date dateEnvoi) {
         this.dateEnvoi = dateEnvoi;
+    }
+    
+    
+    public static void setMessage(Message message) {
+        message.dateEnvoi = new Date();
+        Ebean.save(message);
     }
 }

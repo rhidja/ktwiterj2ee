@@ -95,6 +95,10 @@ public class Comment{
     public static long nbrCmntsByPost(Post post) {
         return Ebean.find(Comment.class).where().eq("post", post).findRowCount();
     }
+
+    public static long nbrCmntsByMember(Member member) {
+        return Ebean.find(Comment.class).where().eq("autor", member).findRowCount();
+    }
     
     public static Comment getComment(long id) {
         return Ebean.find(Comment.class).where().eq("id", id).findUnique();

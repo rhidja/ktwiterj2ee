@@ -2,7 +2,7 @@ $(document).ready(function($) {
  
     
     $(".btn-home").click(function(e) {
-        window.location = 'http://localhost:9000/ktwiter/rest/about';
+        window.location = '/ktwiter';
     });
     
     $(".btn-test").click(function(e) {
@@ -93,6 +93,8 @@ $(document).ready(function($) {
             success: function(login) {
                 setCookie("login", login, -10);
                 window.location = '/ktwiter';
+                $('article').load('signin.html');
+                
             }
         });
     });
@@ -111,16 +113,35 @@ $(document).ready(function($) {
         $login = $("#ipt-Login").val();
         $email = $("#ipt-Email").val();
         $password = $("#ipt-Password").val();
-        $.ajax({
-            type: 'POST',
-            url: 'rest/ctrlmembers/addmember',
-            contentType: "application/json; charset=UTF-8",
-            data: "login="+$login+"&email="+$email+"&password="+$password,
-            success: function(data) {
-                alert(data);
-                //$('article').load('article.scala.html');
-            }
-        });
+        $rpassword = $("#ipt-rPassword").val();
+        if($password!=$rpassword){
+            $('article').prepend(
+                '<div class="alert alert-danger">'+
+                    '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+
+                    '<strong>Oh snap!</strong> Please re-enter the same password.'+
+                '</div>'
+            );   
+        }else{
+            $.ajax({
+                type: 'POST',
+                url: 'rest/ctrlmembers/addmember',
+                contentType: "application/json; charset=UTF-8",
+                data: "login="+$login+"&email="+$email+"&password="+$password,
+                success: function(data) {
+                    if(data!="fail"){
+                        setCookie("login", data, 10);
+                        window.location = '/ktwiter';
+                    }else{
+                        $('article').prepend(
+                            '<div class="alert alert-danger">'+
+                            '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+
+                                '<strong>Oh snap!</strong> This login already exist.'+
+                            '</div>'
+                        );
+                    }
+                }
+            });
+        }
     });
     
     // Supprimer un membre existant.
@@ -137,33 +158,6 @@ $(document).ready(function($) {
             }
         });
     });   
-
-    // Mettre a jours le profile d'un membre.
-//    $('article').on("click", ".btn-update", function(e) {
-//        $nom = $("#ipt_nom").val();
-//        $prenom = $("#ipt_prenom").val();
-//        $email = $("#ipt_email").val();
-//        $day = $("#ipt_day").val();
-//        $month = $("#ipt_month").val();
-//        $year = $("#ipt_year").val();
-//        $password = $("#ipt_password").val();
-//        if ($("input:checked").val() != null) {
-//            $sex = $("input:checked").val();
-//        }
-//        else {
-//            $sex = "";
-//        }
-//        $.ajax({
-//            type: 'POST',
-//            url: '/updateprofile',
-//            contentType: "application/json; charset=UTF-8",
-//            data: JSON.stringify({"nom": $nom, "prenom": $prenom, "email": $email, "password": $password, "day": $day, "month": $month, "year": $year, "sex": $sex}),
-//            success: function(data) {
-////                //$('article').load('article.scala.html');
-//            }
-//        });
-//        return false;
-//    });
 
 //    $('article').on("click", ".mbr-delete", function(e) {
 //        alert("OK");
@@ -261,13 +255,15 @@ $(document).ready(function($) {
 
     //Afficher les posts du membre connecte.
 
-    $(".btn-wall").click(function(e) {
+    $("header").on("click",".btn-wall",function(e) {
         $.ajax({
             type: 'GET',
             url: 'rest/ctrlposts/wallposts',
             contentType: "application/json; charset=UTF-8",
-            success: function(data) {
-                $('article').html(data);
+            success: function(json) {
+                $('article').html("");
+                $('article').append('<link rel="stylesheet" media="screen" href="css/post.css">')
+                affichage(json);
             }
         });
     });
@@ -342,49 +338,73 @@ $(document).ready(function($) {
 //==========================================    Profile   =========================================================
 //=================================================================================================================	
 
-    // Afficher un profile.
-//    $('article').on("click", ".autor-login", function(e) {
-//        $login = $(this).find("b").text();
-//        $.ajax({
-//            type: 'POST',
-//            url: '/profile',
-//            contentType: "application/json; charset=UTF-8",
-//            data: JSON.stringify({"login": $login}),
-//            success: function(data) {
-//                $('article').html(data);
-//            }
-//        });
-//    });
-
     //Afficher le profile du membere connecte.
-//    $(".view-profile").on("click", function(e) {
-//        $.ajax({
-//            type: 'GET',
-//            url: '/viewprofile',
-//            contentType: "application/json; charset=UTF-8",
-//            success: function(data) {
-//                $('article').html(data);
-//            }
-//        });
-//    });
+    $("header").on("click",".view-profile",function(e) {
+        $('article').load("profile.html");
+        $.ajax({
+            type: 'GET',
+            url: 'rest/ctrlprofiles/viewprofile',
+            contentType: "application/json; charset=UTF-8",
+            success: function(json) {                
+                if(json.login!=null){$("#id-login").text(json.login);}
+                if(json.email!=null){$("#id-email").text(json.email);}
+                if(json.profile.nom!=null){$("#id-nom").text(json.profile.nom);}
+                if(json.profile.prenom!=null){$("#id-prenom").text(json.profile.prenom);}
+                if(json.profile.dateNaissance!=null){$("#id-date-naissance").text(json.profile.dateNaissance);}
+            }
+        });
+    });
 
     //Afficher le formulaire pour la modification du profile du membre connecte.
-//    $("article").on("click", ".btn-edit-profile", function(e) {
-//        $.ajax({
-//            type: 'GET',
-//            url: '/editprofile',
-//            contentType: "application/json; charset=UTF-8",
-//            success: function(data) {
-//                $('article').html(data);
-//            }
-//        });
-//    });
-
+    $("article").on("click", ".btn-edit-profile", function(e) {
+        $('article').load('editprofile.html');
+        $.ajax({
+            type: 'GET',
+            url: 'rest/ctrlprofiles/editprofile',
+            contentType: "application/json; charset=UTF-8",
+            success: function(json) {
+                //if(json.login!=null){$("#ipt_login").text(json.login);}
+                if(json.email!=null){$("#ipt_email").val(json.email);}
+                if(json.profile.nom!=null){$("#ipt_nom").val(json.profile.nom);}
+                if(json.profile.prenom!=null){$("#ipt_prenom").val(json.profile.prenom);}                
+            }
+        });
+    });
+    
+    
+    // Mettre a jours le profile d'un membre.
+    $('article').on("click", ".btn-update", function(e) {
+        $('article').load('profile.html');
+        $nom = $("#ipt_nom").val();
+        $prenom = $("#ipt_prenom").val();
+        $email = $("#ipt_email").val();
+        $day = $("#ipt_day").val();
+        $month = $("#ipt_month").val();
+        $year = $("#ipt_year").val();
+        $password = $("#ipt_password").val();
+        if ($("input:checked").val() != null) {
+            $sex = $("input:checked").val();
+        }
+        else {
+            $sex = "";
+        }
+        $.ajax({
+            type: 'POST',
+            url: 'rest/ctrlprofiles/updateprofile',
+            contentType: "application/json; charset=UTF-8",
+            data: "nom="+$nom+"&prenom="+$prenom+"&email"+$email+"&password="+$password+"&day="+$day+"&month="+$month+"&year="+$year+"&sex="+$sex,
+            success: function(json) {                
+                if(json.login!=null){$("#id-login").text(json.login);}
+                if(json.email!=null){$("#id-email").text(json.email);}
+                if(json.profile.nom!=null){$("#id-nom").text(json.profile.nom);}
+                if(json.profile.prenom!=null){$("#id-prenom").text(json.profile.prenom);}
+                if(json.profile.dateNaissance!=null){$("#id-date-naissance").text(json.profile.dateNaissance);}
+                if(json.profile.roles!=null){$("#id-role").text(json.profile.roles);}
+            }
+        });
+        return false;
+    });
 });
-
-           
-
-
 
 function setCookie(cname, cvalue, extime)
             {
@@ -414,42 +434,8 @@ function setCookie(cname, cvalue, extime)
                 if (user != "" && user != null)
                 {
                     $(".navbar-brand").html("<b>Azul " + user + "!</b>");
-                    $(".navbar-right").html(
-                    	'<li>'+
-                            '<a href="#" class="btn-message">Message</a>'+
-                        '</li>'+
-                        '<li>'+
-                            '<a href="#" class="btn-all">All</a>'+
-                        '</li>'+
-                        '<li>'+
-                            '<a href="#" class="btn-wall">Wall</a>'+
-                        '</li>'+
-	                
-                        '<li class="dropdown">'+
-                            '<a href="#" class="dropdown-toggle" data-toggle="dropdown">'+
-                                '<span class="glyphicon glyphicon-user"></span><b class="caret"></b>'+
-                            '</a>'+
-                            '<ul class="dropdown-menu">'+
-                                '<li>'+
-                                    '<a href="#" class="signup_frm">'+
-                                        '<span class="glyphicon glyphicon-cog"></span> Settings'+
-                                    '</a>'+
-                                '</li>'+
-                                '<li>'+
-                                    '<a href="#" class="view-profile">'+
-                                        '<span class="glyphicon glyphicon-th-list"></span> Profile'+
-                                    '</a>'+
-                                '</li>'+
-                                '<li class="divider"></li>'+
-                                '<li class="active">'+
-                                    '<a href="#" class="btn-logout">'+
-                                        '<span class="glyphicon glyphicon-log-out"></span> Log out'+
-                                    '</a>'+
-                                '</li>'+
-                            '</ul>'+
-                        '</li>'
-                    );
-                   
+                    $(".navbar-right").load("mnav.html");
+                    $(".frm-posts").removeClass("hidden");
                     $.ajax({
                         type: 'GET',
                         url: 'rest/ctrlposts/allposts',
@@ -460,14 +446,14 @@ function setCookie(cname, cvalue, extime)
                             affichage(json);
                         }
                     });                
+                }else{
+                    $('article').load("signup.html");
                 }
             }
 
 
 function affichage(posts){
-            //for (var post in posts) {    
         for(var i=0;i<posts.length;i++){
-        //$.each(posts, function(index, post) {
             var post=posts[i];
                     $('article').append(
                         '<div class="row post">'+
