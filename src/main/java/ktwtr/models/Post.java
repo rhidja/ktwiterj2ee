@@ -10,6 +10,10 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 
+/**
+*
+* @author rhidja
+*/
 @Entity
 @Table(name = "tb_post")
 public class Post {
@@ -26,6 +30,31 @@ public class Post {
     private Member autor;
     private List<Comment> comments;
 
+    // Methodes statics  ================================================================================
+    public static List<Post> all() {
+        return Ebean.find(Post.class).order().desc("postDate").findList();
+    }
+
+    public static long getNbrPosts() {
+        return Ebean.find(Post.class).findRowCount();
+    }
+    
+    public static long nbrPostsByMember(Member member) {
+        return Ebean.find(Post.class).where().eq("autor",member).findRowCount();
+    }
+    public static List<Post> getPostsByM(Member member) {
+        return Ebean.find(Post.class).where().eq("autor", member).findList();
+    }
+
+    public static Post getPost(long postId) {
+        return Ebean.find(Post.class).where().eq("id", postId).findUnique();
+    }
+
+    public static void setPost(Post post) {
+        post.postDate = new Date();
+        Ebean.save(post);
+    }
+    
     // Getters and Setters
     // ==============================================================================
     public long getId() {
@@ -82,30 +111,5 @@ public class Post {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
-    }
-
-    // Methodes statics  ================================================================================
-    public static List<Post> all() {
-        return Ebean.find(Post.class).order().desc("postDate").findList();
-    }
-
-    public static long getNbrPosts() {
-        return Ebean.find(Post.class).findRowCount();
-    }
-    
-    public static long nbrPostsByMember(Member member) {
-        return Ebean.find(Post.class).where().eq("autor",member).findRowCount();
-    }
-    public static List<Post> getPostsByM(Member member) {
-        return Ebean.find(Post.class).where().eq("autor", member).findList();
-    }
-
-    public static Post getPost(long postId) {
-        return Ebean.find(Post.class).where().eq("id", postId).findUnique();
-    }
-
-    public static void setPost(Post post) {
-        post.postDate = new Date();
-        Ebean.save(post);
     }
 }
