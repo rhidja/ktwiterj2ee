@@ -55,4 +55,14 @@
         <url-pattern>/home</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>Members</servlet-name>
+        <servlet-class>ktwtr.Members</servlet-class>
+    </servlet>
+ 
+    <servlet-mapping>
+        <servlet-name>Members</servlet-name>
+        <url-pattern>/members</url-pattern>
+    </servlet-mapping>
+    
 </web-app>
