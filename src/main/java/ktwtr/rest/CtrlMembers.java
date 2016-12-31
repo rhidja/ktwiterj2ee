@@ -5,68 +5,82 @@
 package ktwtr.rest;
 
 import com.avaje.ebean.Ebean;
+
+import java.net.URI;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+
 import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import ktwtr.models.Member;
-import ktwtr.models.Profile;
 
 /**
  *
  * @author ram
  */
-@Path("/ctrlmembers")
+@Path("/members")
 public class CtrlMembers {
     
     @Context
     HttpServletRequest request;
-    
-    @Path("/addmember")
+
+    @GET
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<Member> members (){
+        return Member.members();
+    }
+
     @POST
     @Produces({MediaType.TEXT_PLAIN})
-    public Response addMember(@FormParam("login") String login, @FormParam("email") String email, @FormParam("password") String password) {
-        if (!Member.isMemberByLogin(login)) {
-            Member member = new Member();
-            member.setLogin(login);
-            member.setEmail(email);
-            member.setPassword(password);
-            Ebean.save(member);
-            
-            member = Member.getMember(login);
-            Profile profile = new Profile();
-            profile.setMember(member);
-            profile.setRoles("Member");
-            Profile.setProfile(profile);
-            
-            HttpSession session = request.getSession(true);
-            session.setAttribute("login", login);
-            return Response.ok().entity(login).build();
-        }else{
-            return Response.ok().entity("fail").build();
-        }       
+    public Response newMember(@FormParam("login") String login, @FormParam("email") String email, @FormParam("password") String password) {
+        
+        Member member = new Member();
+        member.setLogin(login);
+        member.setEmail(email);
+        member.setPassword(password);
+        Ebean.save(member);
+                
+        return Response.ok().entity("L'utilisateur : " + login + "est ajouté!").build();
     }
     
-    @Path("/delmember")
-    @POST
+    @Path("/{login}")
+    @GET
     @Produces({MediaType.TEXT_PLAIN})
-    public Response deleteMember(@FormParam("login") String login) {
-        Member member = Member.getMember(login);
+    public Member get(@PathParam("login") String login) {
+    	Member member = Member.getMember(login);
+        return member;
+    }
+    
+    @Path("/{login}")
+    @DELETE
+    @Produces({MediaType.TEXT_PLAIN})
+    public Response deleteMember(@PathParam("login") String login) {
+      
+    	Member member = Member.getMember(login);
         Ebean.delete(member);
         return Response.ok().entity("The member '" + login + "' is deleted.").build();
     }
     
-    @Path("/updatemember")
-    @POST
+    @Path("/{login}")
+    @PUT
     @Produces({MediaType.TEXT_PLAIN})
-    public Response updateMember(@FormParam("email") String email, @FormParam("password") String password) {
-        Member member = Member.getMember("");
-        //Ebean.delete(member);
+    public Response updateMember(@PathParam("login") String login, @FormParam("email") String email, @FormParam("password") String password) {
+    	
+    	Member member = Member.getMember(login);
+        member.setEmail(email);
+        member.setPassword(password);
+        Ebean.update(member);
+        
         return Response.ok().entity("The member is updated.").build();
     }
 }
