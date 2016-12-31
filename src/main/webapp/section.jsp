@@ -1,7 +1,62 @@
+<%@ page pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <div class="row">
 
-          <!-- Blog Post Content Column -->
+    <!-- Blog Post Content Column -->
     <div class="col-lg-8">
+
+		<c:forEach var="post" items="${ posts }" >
+			<article class="row">
+
+		        <!-- Blog Post -->
+		
+		        <!-- Title -->
+		        <h1><c:out value="${post.title}" /></h1>
+		
+		        <!-- Author -->
+		        <p class="lead">
+		            by <a href="#">rhidja</a>
+		        </p>
+		
+		        <hr>
+		
+		        <!-- Date/Time -->
+		        <p><span class="glyphicon glyphicon-time"></span> Posted on August 24, 2013 at 9:00 PM</p>
+		
+		        <hr>
+		
+		        <!-- Preview Image -->
+		        <img class="img-responsive" src="http://placehold.it/900x300" alt="">
+		
+		        <hr>
+		
+		        <!-- Post Content -->
+		        <p class="lead"><c:out value="${post.content}"/></p>
+		        <p><c:out value="${post.content}"/></p>
+		
+		        <hr>
+		
+		        <!-- Blog Comments -->
+		
+		        <!-- Comments Form -->
+		        <div class="well">
+		            <h4>Leave a Comment:</h4>
+		            <form role="form">
+		                <div class="form-group">
+		                    <textarea class="form-control" rows="3"></textarea>
+		                </div>
+		                <button type="submit" class="btn btn-primary">Submit</button>
+		            </form>
+		        </div>
+		
+		        <hr>
+        				
+		
+			</article>
+			
+		</c:forEach>
+		<!-- ./ forEach -->
+
 
         <!-- Blog Post -->
 
