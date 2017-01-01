@@ -2,30 +2,30 @@
 <html lang="en">
 
 <head>
-	<c:import url="head.jsp"></c:import>
+	<c:import url="inc/head.jsp"></c:import>
 </head>
 
 <body>
 
-	<c:import url="navbar.jsp"></c:import>
-	
+	<c:import url="inc/navbar.jsp"></c:import>
+
     <!-- Page Content -->
     <div class="container">
 
-        <c:import url="section.jsp"></c:import>
+        <c:import url="inc/section.jsp"></c:import>
 
         <hr>
 
         <!-- Footer -->
         <footer>
-			<c:import url="footer.jsp"></c:import>
+			<c:import url="inc/footer.jsp"></c:import>
         </footer>
         <!-- /.footer -->
 
     </div>
     <!-- /.container -->
 
-	<c:import url="scripts.jsp"></c:import>
+	<c:import url="inc/scripts.jsp"></c:import>
 
 </body>
 

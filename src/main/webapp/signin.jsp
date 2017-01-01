@@ -2,12 +2,12 @@
 <html lang="en">
 
 <head>
-	<c:import url="head.jsp"></c:import>
+	<c:import url="inc/head.jsp"></c:import>
 </head>
 
 <body>
 
-	<c:import url="navbar.jsp"></c:import>
+	<c:import url="inc/navbar.jsp"></c:import>
 
     <!-- Page Content -->
     <div class="container">
@@ -16,13 +16,13 @@
                 <c:if test="${ !empty error }">
                 	<div class="alert alert-danger" role="alert">${ error } </div>
                 </c:if>
-                	
+
                 <div class="panel panel-primary">
                     <div class="panel-header">
                         <h3 class="text-center"> Please SIGN IN </h3>
                     </div>
                     <form class="form" method="post">
-	                    <div class="panel-body">  
+	                    <div class="panel-body">
                             <div class="form-group">
                                 <div class="input-group">
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
@@ -46,14 +46,14 @@
 
         <!-- Footer -->
         <footer>
-        	<c:import url="footer.jsp"></c:import>
+        	<c:import url="inc/footer.jsp"></c:import>
         </footer>
         <!-- /.footer -->
 
     </div>
     <!-- /.container -->
-	
-	<c:import url="scripts.jsp"></c:import>
+
+	<c:import url="inc/scripts.jsp"></c:import>
 
 </body>
 
