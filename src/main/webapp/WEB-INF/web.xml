@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app 
+<web-app
     xmlns="http://java.sun.com/xml/ns/javaee"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
     version="3.0">
-      
+
     <!-- Les servelets REST -->
     <servlet>
         <servlet-name>jersey-serlvet</servlet-name>
@@ -16,29 +16,35 @@
         <init-param>
             <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
             <param-value>true</param-value>
-        </init-param>                
+        </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
- 
+
     <servlet-mapping>
         <servlet-name>jersey-serlvet</servlet-name>
         <url-pattern>/rest/*</url-pattern>
     </servlet-mapping>
- 
+
   	<!-- Les servelets WEB -->
     <servlet>
         <servlet-name>jersey-serlvet-web</servlet-name>
         <servlet-class> com.sun.jersey.spi.container.servlet.ServletContainer </servlet-class>
         <init-param>
             <param-name>com.sun.jersey.config.property.packages</param-name>
-            <param-value>ktwtr.rest</param-value>
+            <param-value>ktwtr.web</param-value>
         </init-param>
+
+	    <init-param>
+	        <param-name>com.sun.jersey.config.property.JSPTemplatesBasePath</param-name>
+	        <param-value>/WEB-INF/web</param-value>
+	    </init-param>
+
         <init-param>
             <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
             <param-value>true</param-value>
         </init-param>
     </servlet>
- 
+
     <servlet-mapping>
         <servlet-name>jersey-serlvet-web</servlet-name>
         <url-pattern>/web/*</url-pattern>
@@ -49,7 +55,7 @@
         <servlet-name>Home</servlet-name>
         <servlet-class>ktwtr.Home</servlet-class>
     </servlet>
- 
+
     <servlet-mapping>
         <servlet-name>Home</servlet-name>
         <url-pattern>/home</url-pattern>
@@ -59,10 +65,39 @@
         <servlet-name>Members</servlet-name>
         <servlet-class>ktwtr.Members</servlet-class>
     </servlet>
- 
+
     <servlet-mapping>
         <servlet-name>Members</servlet-name>
         <url-pattern>/members</url-pattern>
     </servlet-mapping>
-    
+
+    <servlet>
+        <servlet-name>Signin</servlet-name>
+        <servlet-class>ktwtr.Signin</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>Signin</servlet-name>
+        <url-pattern>/signin</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Signup</servlet-name>
+        <servlet-class>ktwtr.Signup</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>Signup</servlet-name>
+        <url-pattern>/signup</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Signout</servlet-name>
+        <servlet-class>ktwtr.Signout</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>Signout</servlet-name>
+        <url-pattern>/signout</url-pattern>
+    </servlet-mapping>    
 </web-app>

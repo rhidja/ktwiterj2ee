@@ -1,3 +1,5 @@
+<%@ page pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!-- Navigation -->
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
@@ -13,17 +15,35 @@
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-                <li>
-                    <a href="#">About</a>
-                </li>
-                <li>
-                    <a href="#">Services</a>
-                </li>
-                <li>
-                    <a href="#">Contact</a>
+
+
+            <%--  navbar right --%>
+            <ul class="nav navbar-nav navbar-right">
+                <c:if test="${ !empty sessionScope.member.login }">
+                	<li><a href="#">Bonjour ${ sessionScope.member.login }! </a></li>
+                </c:if>
+                <li><a href="#">Home</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                    	<span class="glyphicon glyphicon-user"></span> Member 
+                    	<span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                    	<c:choose>
+                    	<c:when test="${ empty sessionScope.member.login }">
+	                        <li><a href="#"><span class="glyphicon glyphicon-login"></span>  Signin</a></li>
+	                        <li><a href="#"><span class="glyphicon glyphicon-pencil"></span> Signup</a></li>
+	                    </c:when>
+	                    <c:when test="${ !empty sessionScope.member.login }">  
+	                        <li><a href="#">Profile</a></li>
+	                        <li role="separator" class="divider"></li>
+                        	<li><a href="#"><span class="glyphicon glyphicon-logout"></span> Signout</a></li>
+                        </c:when>
+                        </c:choose>
+                    </ul>
                 </li>
             </ul>
+            <%--  ./ navbar right --%>
         </div>
         <!-- /.navbar-collapse -->
     </div>
