@@ -1,5 +1,3 @@
-<%@ page pageEncoding="UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <div class="row">
 
     <!-- Blog Post Content Column -->
@@ -86,7 +84,17 @@
         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eos, doloribus, dolorem iusto blanditiis unde eius illum consequuntur neque dicta incidunt ullam ea hic porro optio ratione repellat perspiciatis. Enim, iure!</p>
         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error, nostrum, aliquid, animi, ut quas placeat totam sunt tempora commodi nihil ullam alias modi dicta saepe minima ab quo voluptatem obcaecati?</p>
         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Harum, dolor quis. Sunt, ut, explicabo, aliquam tenetur ratione tempore quidem voluptates cupiditate voluptas illo saepe quaerat numquam recusandae? Qui, necessitatibus, est!</p>
-
+		<hr>
+		<p>
+	          <i class="icon-user"></i> by <a href="#">John</a> 
+	          | <i class="icon-calendar"></i> Sept 16th, 2012
+	          | <i class="icon-comment"></i> <a href="#">3 Comments</a>
+	          | <i class="icon-share"></i> <a href="#">39 Shares</a>
+	          | <i class="icon-tags"></i> Tags : <a href="#"><span class="label label-info">Snipp</span></a> 
+	          <a href="#"><span class="label label-info">Bootstrap</span></a> 
+	          <a href="#"><span class="label label-info">UI</span></a> 
+	          <a href="#"><span class="label label-info">growth</span></a>
+       	</p>
         <hr>
 
         <!-- Blog Comments -->

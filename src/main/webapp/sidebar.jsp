@@ -1,4 +1,3 @@
-
 <!-- Blog Search Well -->
 <div class="well">
     <h4>Blog Search</h4>

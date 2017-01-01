@@ -1,37 +1,31 @@
-<%@ page pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-	<%@ include file="head.jsp" %>
+	<c:import url="head.jsp"></c:import>
 </head>
 
 <body>
-	
-	<%@ include file="navbar.jsp" %>
-	
+	<c:import url="navbar.jsp"></c:import>
+
     <!-- Page Content -->
     <div class="container">
-
-        <%@ include file="section.jsp" %>
+		
+		<c:import url="section.jsp"></c:import>
 
         <hr>
 
         <!-- Footer -->
         <footer>
-			<%@ include file="footer.jsp" %>
+        	<c:import url="navbar.jsp"></c:import>
         </footer>
         <!-- /.footer -->
 
     </div>
     <!-- /.container -->
-
-    <!-- jQuery -->
-    <script src="js/jquery.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
-
+	
+	<c:import url="navbar.jsp"></c:import>
+	
 </body>
 
 </html>
