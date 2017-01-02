@@ -24,6 +24,7 @@
                     <a href="contact.html">Contact</a>
                 </li>
                 <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user" aria-hidden="true"></i> Member <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <c:choose>
 	                        <c:when test="${ empty sessionScope.member.login }">
