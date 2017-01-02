@@ -188,6 +188,7 @@
             </plugin>
 
         </plugins>
+        <finalName>ktwiter</finalName>
     </build>
 
 </project>
