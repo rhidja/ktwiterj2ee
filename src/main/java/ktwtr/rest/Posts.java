@@ -19,7 +19,7 @@ import ktwtr.models.*;
 
 /**
  *
- * @author ram
+ * @author rhidja
  */
 @Path("/posts")
 public class Posts {
