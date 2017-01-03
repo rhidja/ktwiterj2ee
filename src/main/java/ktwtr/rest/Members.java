@@ -32,21 +32,20 @@ import ktwtr.models.Member;
 @Path("/mymembers")
 public class Members {
 
-    @Context
-    private HttpServletRequest request;
     private Boolean status;
     private String message;
 
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    public List<Member> members (){
-        return Member.members();
+    public List<Member> getAll(){
+
+        return Ebean.find(Member.class).findList();
     }
 
     @Path("/{id}")
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    public Member get(@PathParam("id") long id) {
+    public Member getMember(@PathParam("id") long id) {
 
         return Ebean.find(Member.class).where().eq("id", id).findUnique();
     }
@@ -98,8 +97,10 @@ public class Members {
         if(member != null){
             Ebean.delete(member);
             this.message = "Membre suprimé avec succès";
+            this.status = true;
         }else{
             this.message = "Aucune correspondance pour cet Id";
+            this.status = false;
         }
 
         return new RestResponse<Member>(this.status, this.message, member);
