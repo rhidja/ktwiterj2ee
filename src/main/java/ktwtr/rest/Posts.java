@@ -27,48 +27,80 @@ import ktwtr.models.*;
 @Path("/posts")
 public class Posts {
 
-    @Context
-    HttpServletRequest request;
+    private Boolean status;
+    private String message;
 
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    public List<Post> allPosts() {
-        
-        return  Post.all();
+    public List<Post> getAll() {
+
+        return Ebean.find(Post.class).findList();
     }
-    
+
+    @Path("/{id}")
+    @GET
+    @Produces({MediaType.APPLICATION_JSON})
+    public Post getPost(@PathParam("id") long id) {
+
+        return Ebean.find(Post.class).where().eq("id", id).findUnique();
+    }
+
     @POST
-    @Produces({MediaType.TEXT_PLAIN})
-    public Response submitPost(@FormParam("title") String title, @FormParam("content") String content) {
+    @Produces({MediaType.APPLICATION_JSON})
+    public RestResponse<Post> addPost(@FormParam("member_id") long member_id, @FormParam("title") String title, @FormParam("content") String content) {
 
         Post post = new Post();
         post.setTitle(title);
         post.setContent(content);
+
+        Member member = Ebean.find(Member.class).where().eq("id", member_id).findUnique();
+        post.setAutor(member);
+
         Ebean.save(post);
 
-        return Response.ok().entity("Le post est sauvegardé.").build();
+        this.status = true;
+        this.message = "Post ajouté avec succès";
+
+        return new RestResponse<Post>(this.status, this.message, post);
     }
 
     @Path("/{id}")
     @PUT
-    @Produces({MediaType.TEXT_PLAIN})
-    public Response submitPost(@PathParam("id") long id, @FormParam("title") String title, @FormParam("content") String content) {
+    @Produces({MediaType.APPLICATION_JSON})
+    public RestResponse<Post> updatePost(@PathParam("id") long id, @FormParam("title") String title, @FormParam("content") String content) {
 
-    	Post post = Post.getPost(id);
-        post.setTitle(title);
-        post.setContent(content);
-        Ebean.save(post);
+        Post post = Ebean.find(Post.class).where().eq("id", id).findUnique();
 
-        return Response.ok().entity("Le post est sauvegardé.").build();
+        if(post != null){
+            post.setTitle(title);
+            post.setContent(content);
+            Ebean.save(post);
+            this.message = "Post modifié avec succès";
+            this.status = true;
+        }else{
+            this.message = "Aucune correspondance pour cet Id";
+            this.status = false;
+        }
+
+        return new RestResponse<Post>(this.status, this.message, post);
     }
-    
+
     @Path("/{id}")
     @DELETE
-    @Produces({MediaType.TEXT_PLAIN})
-    public Response deletePost(@PathParam("id") long id) {
-    	
-    	Post post = Post.getPost(id);
-        Ebean.delete(post);
-        return Response.ok().entity("Post supprimé.").build();
-    } 
+    @Produces({MediaType.APPLICATION_JSON})
+    public RestResponse<Post> deletePost(@PathParam("id") long id) {
+
+        Post post = Ebean.find(Post.class).where().eq("id", id).findUnique();
+
+        if(post != null){
+            Ebean.delete(post);
+            this.message = "Post suprimé avec succès";
+            this.status = true;
+        }else{
+            this.message = "Aucune correspondance pour cet Id";
+            this.status = false;
+        }
+
+        return new RestResponse<Post>(this.status, this.message, post);
+    }
 }
