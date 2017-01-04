@@ -16,19 +16,19 @@ import ktwtr.models.Member;
  * @author rhidja
  */
 
-@WebServlet( "/inscription" )
+@WebServlet( "/members" )
 public class Members extends HttpServlet{
 
     public void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException{
-    	
+
     	List<Member> members = Member.members();
     	String message = "";
-    	
+
         for (int i = 0; i < members.size(); i++) {
         	System.out.println(members.get(i).getLogin());
         	message += members.get(i).getLogin();
         }
-        
+
         request.setAttribute( "message", message );
         this.getServletContext().getRequestDispatcher( "/members.jsp" ).forward( request, response );
     }
