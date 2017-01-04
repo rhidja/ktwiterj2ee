@@ -13,8 +13,8 @@ import javax.servlet.http.HttpSession;
  *
  * @author rhidja
  */
-@WebServlet( "/signout" )
-public class Signout extends HttpServlet{
+@WebServlet( "/logout" )
+public class Logout extends HttpServlet{
 
     public void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException{
         
