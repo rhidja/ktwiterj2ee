@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.avaje.ebean.Ebean;
+
 import ktwtr.models.Member;
 
 /**
@@ -21,7 +23,7 @@ public class Members extends HttpServlet{
 
     public void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException{
 
-    	List<Member> members = Member.members();
+    	List<Member> members = Ebean.find(Member.class).findList();
     	String message = "";
 
         for (int i = 0; i < members.size(); i++) {

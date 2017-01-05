@@ -29,10 +29,10 @@
                         <c:choose>
 	                        <c:when test="${ empty sessionScope.member.login }">
 		                        <li>
-		                            <a href="/signin"><i class="fa fa-sign-in" aria-hidden="true"></i> Sign In</a>
+		                            <a href="/login"><i class="fa fa-sign-in" aria-hidden="true"></i> Sign In</a>
 		                        </li>
 		                        <li>
-		                            <a href="/signup"><i class="fa fa-user-plus" aria-hidden="true"></i> Sign Up</a>
+		                            <a href="/register"><i class="fa fa-user-plus" aria-hidden="true"></i> Sign Up</a>
 		                        </li>
 	                        </c:when>
 	                        <c:when test="${ !empty sessionScope.member.login }">
