@@ -1,12 +1,18 @@
 package ktwtr.models;
 
-import com.avaje.ebean.Ebean;
+import com.avaje.ebean.validation.Email;
+import com.avaje.ebean.validation.NotEmpty;
+import com.avaje.ebean.validation.Past;
+
+import java.util.Date;
 import java.util.List;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
 import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
-import javax.persistence.OneToOne;
 
 @Entity
 @Table(name = "tb_member")
@@ -15,20 +21,41 @@ public class Member {
     @Id
     @GeneratedValue
     private long id;
+    
+    @NotEmpty
     private String login;
+    
+    @NotEmpty
+    @Email
     private String email;
+    
+    @NotEmpty
     private String password;
-    private long nbrPosts;
-    private long nbrComments;
-    private long nbrReceivedMessages;
-    private long nbrSentMessages;
-    private List<Message> receivedMessages;
-    private List<Message> sentMessages;
+    
+    @Column(name="first_name")
+    private String firstName;
+    
+    @Column(name="last_name")
+    private String lastName;
+    
+    private String sexe;
+    
+    private String roles;
+    
+    @Past
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date birthDate;
+    
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date registerDate;
+
+    private List<Message> messages;
     private List<Comment> comments;
     private List<Post> posts;
-    @OneToOne
-    private Profile profile;
-
+    
+    // Static methods =====================================================================================
+    
+    
     // Getters and Setters ================================================================================
     public long getId() {
         return id;
@@ -38,116 +65,100 @@ public class Member {
         this.id = id;
     }
 
-    public String getLogin() {
-        return login;
-    }
+	public String getLogin() {
+		return login;
+	}
 
-    public void setLogin(String login) {
-        this.login = login;
-    }
+	public void setLogin(String login) {
+		this.login = login;
+	}
 
-    public String getEmail() {
-        return email;
-    }
+	public String getEmail() {
+		return email;
+	}
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
-    public String getPassword() {
-        return password;
-    }
+	public String getPassword() {
+		return password;
+	}
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
-    public long getNbrPosts() {
-        return nbrPosts;
-    }
+	public String getFirstName() {
+		return firstName;
+	}
 
-    public void setNbrPosts(long nbrPosts) {
-        this.nbrPosts = nbrPosts;
-    }
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
 
-    public long getNbrComments() {
-        return nbrComments;
-    }
+	public String getLastName() {
+		return lastName;
+	}
 
-    public void setNbrComments(long nbrComments) {
-        this.nbrComments = nbrComments;
-    }
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
 
-    public long getNbrReceivedMessages() {
-        return nbrReceivedMessages;
-    }
+	public String getSexe() {
+		return sexe;
+	}
 
-    public void setNbrReceivedMessages(long nbrReceivedMessages) {
-        this.nbrReceivedMessages = nbrReceivedMessages;
-    }
+	public void setSexe(String sexe) {
+		this.sexe = sexe;
+	}
 
-    public long getNbrSentMessages() {
-        return nbrSentMessages;
-    }
+	public String getRoles() {
+		return roles;
+	}
 
-    public void setNbrSentMessages(long nbrSentMessages) {
-        this.nbrSentMessages = nbrSentMessages;
-    }
+	public void setRoles(String roles) {
+		this.roles = roles;
+	}
 
-    public List<Message> getReceivedMessages() {
-        return receivedMessages;
-    }
+	public Date getBirthDate() {
+		return birthDate;
+	}
 
-    public void setReceivedMessages(List<Message> receivedMessages) {
-        this.receivedMessages = receivedMessages;
-    }
+	public void setBirthDate(Date birthDate) {
+		this.birthDate = birthDate;
+	}
 
-    public List<Message> getSentMessages() {
-        return sentMessages;
-    }
+	public Date getRegisterDate() {
+		return registerDate;
+	}
 
-    public void setSentMessages(List<Message> sentMessages) {
-        this.sentMessages = sentMessages;
-    }
+	public void setRegisterDate(Date registerDate) {
+		this.registerDate = registerDate;
+	}
 
-    public List<Comment> getComments() {
-        return comments;
-    }
+	public List<Message> getMessages() {
+		return messages;
+	}
 
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
-    }
+	public void setMessages(List<Message> messages) {
+		this.messages = messages;
+	}
 
-    public List<Post> getPosts() {
-        return posts;
-    }
+	public List<Comment> getComments() {
+		return comments;
+	}
 
-    public void setPosts(List<Post> posts) {
-        this.posts = posts;
-    }
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
+	}
 
-    public Profile getProfile() {
-        return profile;
-    }
+	public List<Post> getPosts() {
+		return posts;
+	}
 
-    public void setProfile(Profile profile) {
-        this.profile = profile;
-    }
+	public void setPosts(List<Post> posts) {
+		this.posts = posts;
+	}
 
-    // Methodes statics ====================================================================================
-    public static List<Member> members() {
-        return Ebean.find(Member.class).findList();
-    }
-
-    public static Member getMember(String login) {
-        return Ebean.find(Member.class).where().eq("login", login).findUnique();
-    }
-
-    public static Boolean isMember(String login, String password) {
-        return Ebean.find(Member.class).where().eq("login", login).eq("password", password).findRowCount() > 0;
-    }
-
-    public static Boolean isMemberByLogin(String login) {
-        return Ebean.find(Member.class).where().eq("login", login).findRowCount() > 0;
-    }
 }
