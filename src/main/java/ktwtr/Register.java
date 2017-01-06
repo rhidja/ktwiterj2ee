@@ -9,8 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.avaje.ebean.Ebean;
-
 import ktwtr.forms.RegisterForm;
 import ktwtr.models.Member;
 
@@ -22,20 +20,32 @@ import ktwtr.models.Member;
 public class Register extends HttpServlet{
     public static final String ATT_USER = "member";
     public static final String ATT_FORM = "form";
-    public static final String VUE = "/register.jsp";
+    public static final String ATT_MEMBER_SESSION = "memberSession";
 
     public void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException{
-        this.getServletContext().getRequestDispatcher( VUE ).forward( request, response );
+        this.getServletContext().getRequestDispatcher( "/register.jsp" ).forward( request, response );
     }
 
     public void doPost( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException{
   
-        RegisterForm form = new RegisterForm();
-        
+    	HttpSession session = request.getSession();
+    	
+    	RegisterForm form = new RegisterForm();
         Member member = form.registerMember( request );
+        
+        String vue;
+        
+        if ( member != null && form.getErrors().isEmpty() ) {
+            session.setAttribute( ATT_MEMBER_SESSION, member );
+            vue = "/home.jsp"; // Redirect to home page
+        } else {
+            session.setAttribute( ATT_MEMBER_SESSION, null );
+            vue = "/register.jsp";
+        }
+        
         request.setAttribute( ATT_FORM, form );
         request.setAttribute( ATT_USER, member );
 		
-        this.getServletContext().getRequestDispatcher( VUE ).forward( request, response );
+        this.getServletContext().getRequestDispatcher( vue ).forward( request, response );
     }
 }
