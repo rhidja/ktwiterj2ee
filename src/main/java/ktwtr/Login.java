@@ -21,10 +21,9 @@ public class Login extends HttpServlet{
     public static final String ATT_MEMBER = "member";
     public static final String ATT_FORM = "form";
     public static final String ATT_MEMBER_SESSION = "memberSession";
-    public static final String VUE = "/login.jsp";
-
+    
     public void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException{
-        this.getServletContext().getRequestDispatcher( VUE ).forward( request, response );
+        this.getServletContext().getRequestDispatcher( "/login.jsp" ).forward( request, response );
     }
 
     public void doPost( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException{
@@ -34,16 +33,20 @@ public class Login extends HttpServlet{
         Member member = form.loginMember( request );
 
         HttpSession session = request.getSession();
-
-        if ( form.getErrors().isEmpty() ) {
+        
+        String vue;
+        
+        if ( member != null && form.getErrors().isEmpty() ) {
             session.setAttribute( ATT_MEMBER_SESSION, member );
+            vue = "/home.jsp"; // Redirect to home page
         } else {
             session.setAttribute( ATT_MEMBER_SESSION, null );
+            vue = "/login";
         }
 
         request.setAttribute( ATT_FORM, form );
         request.setAttribute( ATT_MEMBER, member );
 
-        this.getServletContext().getRequestDispatcher( VUE ).forward( request, response );
-    }    
+        this.getServletContext().getRequestDispatcher( vue ).forward( request, response );
+    }
 }

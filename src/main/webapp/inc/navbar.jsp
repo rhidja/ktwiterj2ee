@@ -27,7 +27,7 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user" aria-hidden="true"></i> Member <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <c:choose>
-	                        <c:when test="${ empty sessionScope.member.login }">
+	                        <c:when test="${ empty memberSession.email }">
 		                        <li>
 		                            <a href="/login"><i class="fa fa-sign-in" aria-hidden="true"></i> Sign In</a>
 		                        </li>
@@ -35,12 +35,12 @@
 		                            <a href="/register"><i class="fa fa-user-plus" aria-hidden="true"></i> Sign Up</a>
 		                        </li>
 	                        </c:when>
-	                        <c:when test="${ !empty sessionScope.member.login }">
+	                        <c:when test="${ !empty memberSession.email }">
 		                        <li>
 		                            <a href="/profile"><i class="fa fa-bars" aria-hidden="true"></i> Profile</a>
 		                        </li>
 		                        <li>
-		                            <a href="/signout"><i class="fa fa-sign-out" aria-hidden="true"></i> Sign Out</a>
+		                            <a href="/logout"><i class="fa fa-sign-out" aria-hidden="true"></i> Sign Out</a>
 		                        </li>
                         	</c:when>
                         </c:choose>

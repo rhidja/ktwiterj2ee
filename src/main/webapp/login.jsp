@@ -13,11 +13,11 @@
     <div class="container">
         <div class="row">
             <div class="col-md-4 col-md-offset-4">
-                <c:if test="${ !empty error }">
-                	<div class="alert alert-danger" role="alert">${ error } </div>
-                </c:if>
-
-                <div class="panel panel-primary">
+            	<c:choose>
+            		<c:when test="${ !empty form.result }"><div class="alert alert-danger" role="alert">${form.result} </div></c:when>
+            		<%-- <c:when test="${ empty form.errors }"><div class="alert alert-success" role="alert">${form.result} </div></c:when> --%>
+            	</c:choose>
+            	<div class="panel panel-primary">
                     <div class="panel-header">
                         <h3 class="text-center"> Please SIGN IN </h3>
                     </div>
@@ -26,13 +26,15 @@
                             <div class="form-group">
                                 <div class="input-group">
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-                                    <input type="text" name="login" class="form-control" placeholder="Login" required autofocus/>
+                                    <input type="email" name="email" class="form-control" placeholder="Email" required autofocus ${ member.email }/>
+									<p class="help-block">${form.errors['email']}</p>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group">
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
                                     <input type="password" name="password" class="form-control" placeholder="Password" required/>
+									<p class="help-block">${form.errors['password']}</p>
                                 </div>
                             </div>
                     	</div>

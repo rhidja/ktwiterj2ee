@@ -17,10 +17,10 @@ import javax.servlet.http.HttpSession;
 public class Logout extends HttpServlet{
 
     public void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException{
-        
+
     	HttpSession session = request.getSession(true);
         session.invalidate();
-        
-    	this.getServletContext().getRequestDispatcher( "/signin.jsp" ).forward( request, response );
+
+    	this.getServletContext().getRequestDispatcher( "/login.jsp" ).forward( request, response );
     }
 }
