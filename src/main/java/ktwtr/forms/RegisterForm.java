@@ -5,6 +5,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import com.avaje.ebean.Ebean;
 
 import ktwtr.models.Member;
@@ -48,7 +50,8 @@ public final class RegisterForm {
             setErreur( CHAMP_PASS, e.getMessage() );
             setErreur( CHAMP_CONF, null );
         }
-        member.setPassword( password );
+        String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt(12));
+        member.setPassword( hashedPassword );
 
         try {
             loginValidation( login );

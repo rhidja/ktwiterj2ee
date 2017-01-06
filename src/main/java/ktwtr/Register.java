@@ -32,20 +32,16 @@ public class Register extends HttpServlet{
     	
     	RegisterForm form = new RegisterForm();
         Member member = form.registerMember( request );
-        
-        String vue;
-        
+ 
         if ( member != null && form.getErrors().isEmpty() ) {
             session.setAttribute( ATT_MEMBER_SESSION, member );
-            vue = "/home.jsp"; // Redirect to home page
-        } else {
-            session.setAttribute( ATT_MEMBER_SESSION, null );
-            vue = "/register.jsp";
+            request.getRequestDispatcher("/home").forward( request, response );
         }
-        
+
         request.setAttribute( ATT_FORM, form );
         request.setAttribute( ATT_USER, member );
-		
-        this.getServletContext().getRequestDispatcher( vue ).forward( request, response );
+        session.setAttribute( ATT_MEMBER_SESSION, null );
+	
+        this.getServletContext().getRequestDispatcher( "/register.jsp" ).forward( request, response );
     }
 }

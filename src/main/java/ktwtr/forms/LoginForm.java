@@ -5,6 +5,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import com.avaje.ebean.Ebean;
 
 import ktwtr.models.Member;
@@ -41,10 +43,20 @@ public final class LoginForm {
         	setError( CHAMP_PASS, e.getMessage() );
         }       
         
-        Member member = Ebean.find(Member.class).where().eq("email", email).eq("password", password).findUnique();
+        Member member = null;
+        
+        if ( errors.isEmpty() ) {
+        	
+            member = Ebean.find(Member.class).where().eq("email", email).findUnique();
+            
+            // gensalt's log_rounds parameter determines the complexity
+            // the work factor is 2**log_rounds, and the default is 10
+            String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt(12));
 
-        if ( member != null && errors.isEmpty() ) {
-            result = "Succès de la connexion.";
+            if (BCrypt.checkpw(member.getPassword(), hashedPassword))
+            	result = "Succès de la connexion.";
+            else
+            	result = "Échec de la connexion.";
         } else {
         	result = "Échec de la connexion.";
         }
