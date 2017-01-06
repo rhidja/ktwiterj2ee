@@ -6,22 +6,18 @@ package ktwtr.rest;
 
 import com.avaje.ebean.Ebean;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
 
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import ktwtr.models.Member;
 
 
@@ -29,7 +25,7 @@ import ktwtr.models.Member;
  *
  * @author rhidja
  */
-@Path("/mymembers")
+@Path("/members")
 public class Members {
 
     private Boolean status;
@@ -52,6 +48,7 @@ public class Members {
 
     @POST
     @Produces({MediaType.APPLICATION_JSON})
+    @Consumes("application/x-www-form-urlencoded")
     public RestResponse<Member> addMember(@FormParam("login") String login, @FormParam("email") String email, @FormParam("password") String password) {
 
         Member member = new Member();
