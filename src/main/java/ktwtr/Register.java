@@ -35,13 +35,13 @@ public class Register extends HttpServlet{
  
         if ( member != null && form.getErrors().isEmpty() ) {
             session.setAttribute( ATT_MEMBER_SESSION, member );
-            request.getRequestDispatcher("/home").forward( request, response );
+            response.sendRedirect("/ktwiter/home");
+        }else{
+            request.setAttribute( ATT_FORM, form );
+            request.setAttribute( ATT_USER, member );
+            session.setAttribute( ATT_MEMBER_SESSION, null );
+    	
+            this.getServletContext().getRequestDispatcher( "/register.jsp" ).forward( request, response );
         }
-
-        request.setAttribute( ATT_FORM, form );
-        request.setAttribute( ATT_USER, member );
-        session.setAttribute( ATT_MEMBER_SESSION, null );
-	
-        this.getServletContext().getRequestDispatcher( "/register.jsp" ).forward( request, response );
     }
 }

@@ -33,16 +33,16 @@ public class Login extends HttpServlet{
         Member member = form.loginMember( request );
 
         HttpSession session = request.getSession();
-        
         if ( member != null && form.getErrors().isEmpty() ) {
             session.setAttribute( ATT_MEMBER_SESSION, member );
-            request.getRequestDispatcher("/home").forward( request, response );
-        } 
-        
-        session.setAttribute( ATT_MEMBER_SESSION, null );
-        request.setAttribute( ATT_FORM, form );
-        request.setAttribute( ATT_MEMBER, member );
-
-        this.getServletContext().getRequestDispatcher( "/login.jsp" ).forward( request, response );
+            
+            response.sendRedirect("/home");
+        }else{
+            session.setAttribute( ATT_MEMBER_SESSION, null );
+            request.setAttribute( ATT_FORM, form );
+            request.setAttribute( ATT_MEMBER, member );
+            
+            this.getServletContext().getRequestDispatcher( "/login.jsp" ).forward( request, response );
+        }       
     }
 }
