@@ -37,9 +37,10 @@ public class Posts {
     @Path("/{id}")
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    public Post getPost(@PathParam("id") long id) {
+    public RestResponse<Post> getPost(@PathParam("id") long id) {
 
-        return Ebean.find(Post.class).where().eq("id", id).findUnique();
+        Post post = Ebean.find(Post.class).where().eq("id", id).findUnique();
+        return new RestResponse<Post>(this.status, this.message, post);
     }
 
     @POST
