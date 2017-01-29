@@ -35,7 +35,7 @@ public class Register extends HttpServlet{
  
         if ( member != null && form.getErrors().isEmpty() ) {
             session.setAttribute( ATT_MEMBER_SESSION, member );
-            response.sendRedirect("/ktwiter/home");
+            response.sendRedirect( request.getContextPath() + "/home");
         }else{
             request.setAttribute( ATT_FORM, form );
             request.setAttribute( ATT_USER, member );
