@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Table;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 
 /**
@@ -26,6 +27,8 @@ public class Post {
     private Date postDate;
     @ManyToOne
     private Member author;
+    @OneToOne
+    private Image image;
     private List<Comment> comments;
 
     // Methodes statics  ================================================================================
@@ -34,10 +37,6 @@ public class Post {
     // ==============================================================================
     public long getId() {
         return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
 	public String getTitle() {
@@ -72,11 +71,23 @@ public class Post {
 		this.author = author;
 	}
 
+	public Image getImage() {
+		return image;
+	}
+
+	public void setImage(Image image) {
+		this.image = image;
+	}
+
 	public List<Comment> getComments() {
 		return comments;
 	}
 
 	public void setComments(List<Comment> comments) {
 		this.comments = comments;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 }

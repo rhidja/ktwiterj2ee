@@ -18,6 +18,7 @@ import javax.servlet.http.Part;
 
 import com.avaje.ebean.Ebean;
 
+import ktwtr.models.Image;
 import ktwtr.models.Member;
 import ktwtr.models.Post;
 
@@ -43,9 +44,9 @@ public final class PostForm {
 
         String title = getFieldValue( request, CHAMP_TITLE );
         String content = getFieldValue( request, CHAMP_CONTENT );
-        //String file = getFieldValue( request, CHAMP_CONTENT );
         
         Post post = new Post();
+        Image image = new Image();
         
         HttpSession session = request.getSession();
         Member member = (Member)session.getAttribute("memberSession");
@@ -100,7 +101,7 @@ public final class PostForm {
         } catch ( Exception e ) {
             setError( CHAMP_FILE, e.getMessage() );
         }
-        //fichier.setNom( nomFichier );
+        
         
         if ( errors.isEmpty() ) {
             try {
@@ -109,6 +110,9 @@ public final class PostForm {
                 setError( CHAMP_FILE, "Erreur lors de l'écriture du fichier sur le disque." );
             }
         }
+        image.setName( fileName );
+        Ebean.save(image);
+        post.setImage(image);
         
         if ( errors.isEmpty() ) {
             result = "Succes de la connexion.";
