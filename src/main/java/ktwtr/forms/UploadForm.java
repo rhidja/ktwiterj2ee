@@ -14,7 +14,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 
-import ktwtr.models.Fichier;
+import ktwtr.models.Image;
 
 public final class UploadForm {
     private static final String CHAMP_DESCRIPTION = "description";
@@ -32,9 +32,9 @@ public final class UploadForm {
         return erreurs;
     }
 
-    public Fichier enregistrerFichier( HttpServletRequest request, String chemin ) {
+    public Image enregistrerFichier( HttpServletRequest request, String chemin ) {
        
-        Fichier fichier = new Fichier();
+        Image image = new Image();
 
         String description = getValeurChamp( request, CHAMP_DESCRIPTION );
 
@@ -109,7 +109,7 @@ public final class UploadForm {
             } catch ( Exception e ) {
                 setErreur( CHAMP_DESCRIPTION, e.getMessage() );
             }
-            fichier.setDescription( description );
+            image.setDescription( description );
 
             /* Validation du champ fichier. */
             try {
@@ -117,7 +117,7 @@ public final class UploadForm {
             } catch ( Exception e ) {
                 setErreur( CHAMP_FICHIER, e.getMessage() );
             }
-            fichier.setNom( nomFichier );
+            image.setName( nomFichier );
         }
 
         /* Si aucune erreur n'est survenue jusqu'à présent */
@@ -137,7 +137,7 @@ public final class UploadForm {
             resultat = "Échec de l'envoi du fichier.";
         }
 
-        return fichier;
+        return image;
     }
 
     /*

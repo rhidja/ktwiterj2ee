@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import ktwtr.forms.UploadForm;
-import ktwtr.models.Fichier;
+import ktwtr.models.Image;
 
 /**
 *
@@ -38,7 +38,7 @@ public class Upload extends HttpServlet {
 
         UploadForm form = new UploadForm();
 
-        Fichier fichier = form.enregistrerFichier( request, chemin );
+        Image fichier = form.enregistrerFichier( request, chemin );
 
         request.setAttribute( ATT_FORM, form );
         request.setAttribute( ATT_FICHIER, fichier );
