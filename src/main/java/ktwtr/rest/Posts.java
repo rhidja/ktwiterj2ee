@@ -52,7 +52,7 @@ public class Posts {
         post.setContent(content);
 
         Member member = Ebean.find(Member.class).where().eq("id", member_id).findUnique();
-        post.setAutor(member);
+        post.setAuthor(member);
 
         Ebean.save(post);
 

@@ -29,18 +29,18 @@
                         <c:choose>
 	                        <c:when test="${ empty memberSession.email }">
 		                        <li>
-		                            <a href="/login"><i class="fa fa-sign-in" aria-hidden="true"></i> Sign In</a>
+		                            <a href="<c:url value="/login"/>"><i class="fa fa-sign-in" aria-hidden="true"></i> Sign In</a>
 		                        </li>
 		                        <li>
-		                            <a href="/register"><i class="fa fa-user-plus" aria-hidden="true"></i> Sign Up</a>
+		                            <a href="<c:url value="/register"/>"><i class="fa fa-user-plus" aria-hidden="true"></i> Sign Up</a>
 		                        </li>
 	                        </c:when>
 	                        <c:when test="${ !empty memberSession.email }">
 		                        <li>
-		                            <a href="/profile"><i class="fa fa-bars" aria-hidden="true"></i> Profile</a>
+		                            <a href="<c:url value="/profile"/>"><i class="fa fa-bars" aria-hidden="true"></i> Profile</a>
 		                        </li>
 		                        <li>
-		                            <a href="/logout"><i class="fa fa-sign-out" aria-hidden="true"></i> Sign Out</a>
+		                            <a href="<c:url value="/logout"/>"><i class="fa fa-sign-out" aria-hidden="true"></i> Sign Out</a>
 		                        </li>
                         	</c:when>
                         </c:choose>

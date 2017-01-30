@@ -17,7 +17,7 @@
 	    		
 	    		<h1>Create post</h1>
 	    		
-	    		<form method="POST">   		    
+	    		<form method="POST" enctype="multipart/form-data">   		    
 	    		    <div class="form-group">
 	    		        <label for="title">Title <span class="require">*</span></label>
 	    		        <input type="text" class="form-control" name="title" />

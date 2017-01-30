@@ -25,11 +25,10 @@ public class Post {
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date postDate;
     @ManyToOne
-    private Member autor;
+    private Member author;
     private List<Comment> comments;
 
     // Methodes statics  ================================================================================
-
 
     // Getters and Setters
     // ==============================================================================
@@ -65,12 +64,12 @@ public class Post {
 		this.postDate = postDate;
 	}
 
-	public Member getAutor() {
-		return autor;
+	public Member getAuthor() {
+		return author;
 	}
 
-	public void setAutor(Member autor) {
-		this.autor = autor;
+	public void setAuthor(Member author) {
+		this.author = author;
 	}
 
 	public List<Comment> getComments() {
