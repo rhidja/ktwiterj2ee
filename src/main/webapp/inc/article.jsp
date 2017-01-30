@@ -17,7 +17,7 @@
 	<hr>
 	
 	<!-- Preview Image -->
-	<img class="img-responsive" src="http://placehold.it/900x300" alt="">
+	<img class="img-responsive" src='<c:url value="/images/${ requestScope.post.image.name }"></c:url>' alt="">
 	
 	<hr>
 	

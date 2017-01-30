@@ -19,7 +19,7 @@ import ktwtr.models.Post;
  *
  * @author rhidja
  */
-@WebServlet( name="Post", urlPatterns = "/posts", initParams = @WebInitParam( name = "path", value = "/fichiers/" ) )
+@WebServlet( name="Post", urlPatterns = "/posts", initParams = @WebInitParam( name = "path", value = "/images/" ) )
 @MultipartConfig( location = "c:/fichiers", maxFileSize = 10 * 1024 * 1024, maxRequestSize = 5 * 10 * 1024 * 1024, fileSizeThreshold = 1024 * 1024 )
 public class Posts extends HttpServlet{
     public static final String ATT_POST = "post";
@@ -40,8 +40,8 @@ public class Posts extends HttpServlet{
 
     public void doPost( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException{
      	
-    	String path = this.getServletConfig().getInitParameter( PATH );
-    	
+    	String path = getServletContext().getRealPath("/") + this.getServletConfig().getInitParameter( PATH );
+    	   	
     	PostForm form = new PostForm();
         Post post = form.createPost( request, path );
  
