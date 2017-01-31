@@ -66,7 +66,6 @@ public final class PostForm {
         }
         post.setContent( content );
         
-        SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         post.setPostDate(new Date());
         
         String fileName = null;

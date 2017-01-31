@@ -21,7 +21,7 @@ public class Comment{
     @ManyToOne
     private Post post;
     @ManyToOne
-    private Member autor;
+    private Member author;
 
     // Getters and Setters =======================================================================
     public long getId() { // id
@@ -56,12 +56,12 @@ public class Comment{
 		this.post = post;
 	}
 
-	public Member getAutor() {
-		return autor;
+	public Member getAuthor() {
+		return author;
 	}
 
-	public void setAutor(Member autor) {
-		this.autor = autor;
+	public void setAuthor(Member author) {
+		this.author = author;
 	}
 
 }
