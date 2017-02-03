@@ -36,7 +36,7 @@ public class Login extends HttpServlet{
         if ( member != null && form.getErrors().isEmpty() ) {
             session.setAttribute( ATT_MEMBER_SESSION, member );
             
-            response.sendRedirect("/home");
+            response.sendRedirect( request.getContextPath() + "/home");
         }else{
             session.setAttribute( ATT_MEMBER_SESSION, null );
             request.setAttribute( ATT_FORM, form );
